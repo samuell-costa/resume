@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuel Costa | Interactive CV & Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        
+        /* Custom Scrollbar for clean look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f5f5f4; }
+        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+
+        .timeline-line {
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e7e5e4;
+            z-index: 0;
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals. Background: Stone-50 (#fafaf9). Text: Stone-800 (#292524). Accents: Orange-900 (#7c2d12) for a professional, grounded, yet creative feel. -->
+    
+    <!-- Application Structure Plan: 
+         1. Hero Section: Immediate identity (Name, Role, Contacts) + Summary.
+         2. Interactive Dashboard (Tabs):
+            - Tab A: "Experience Journey" (Timeline). Users can expand/collapse roles. This solves the "summary" vs "detail" need.
+            - Tab B: "Impact & Data". Visualizes the 18M views/Analytics skills using Chart.js.
+            - Tab C: "Skills Matrix". categorized tags for Tools vs Soft Skills.
+         3. Education & Languages: clear, static cards.
+         Why: The user is both Creative and Analytical. A standard list doesn't show the "Data" side well. The dashboard approach proves the "Analytical" claim immediately.
+    -->
+
+    <!-- Visualization & Content Choices:
+         - Experience: Vertical timeline with accordion logic. Allows for "Resume" brevity (2 pages equivalent) while hiding deep content until requested.
+         - Impact: Bar Chart for Social Reach (Trey24k stats). Shows scale.
+         - Skills: Radar Chart or Grouped Lists. Chosen: Interactive Filterable List for clarity on mobile.
+         - Logic: Vanilla JS to handle state (current tab, expanded items).
+    -->
+    
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-orange-200 selection:text-orange-900">
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto min-h-screen flex flex-col shadow-2xl bg-white my-0 md:my-8">
+        
+        <!-- Header / Hero -->
+        <header class="bg-white p-8 md:p-12 border-b border-stone-100 relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="flex justify-between items-start flex-col md:flex-row gap-6">
+                    <div>
+                        <h1 class="text-4xl md:text-5xl font-bold text-stone-900 mb-2">Samuel Costa</h1>
+                        <h2 class="text-xl md:text-2xl text-orange-900 font-medium italic">Motion Designer & Multichannel Coordinator</h2>
+                        <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500 font-medium">
+                            <span class="flex items-center gap-1">📍 Portugal</span>
+                            <span class="flex items-center gap-1">📧 sanchescosta.samuel@gmail.com</span>
+                            <a href="#" class="flex items-center gap-1 hover:text-orange-700 transition">🔗 LinkedIn</a>
+                            <a href="#" class="flex items-center gap-1 hover:text-orange-700 transition">🎨 Behance</a>
+                        </div>
+                    </div>
+                    <!-- Intro Paragraph -->
+                    <div class="md:max-w-xs text-sm leading-relaxed text-stone-600 border-l-2 border-orange-200 pl-4">
+                        <p>Creative and analytical strategist with 5+ years of experience bridging the gap between <strong>visual storytelling</strong> and <strong>performance data</strong>. Expert in transforming raw analytics into compelling creative campaigns that drive conversions.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Decorative background element -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-orange-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50 z-0"></div>
+        </header>
+
+        <!-- Navigation / Tabs -->
+        <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-stone-200">
+            <div class="flex overflow-x-auto no-scrollbar">
+                <button onclick="switchTab('experience')" id="tab-experience" class="nav-btn px-6 py-4 font-semibold text-sm uppercase tracking-wider border-b-2 border-orange-900 text-orange-900 transition-colors whitespace-nowrap">Professional Journey</button>
+                <button onclick="switchTab('impact')" id="tab-impact" class="nav-btn px-6 py-4 font-semibold text-sm uppercase tracking-wider border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-colors whitespace-nowrap">Impact Analytics</button>
+                <button onclick="switchTab('skills')" id="tab-skills" class="nav-btn px-6 py-4 font-semibold text-sm uppercase tracking-wider border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-colors whitespace-nowrap">Skills & Tools</button>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="flex-grow p-6 md:p-12 bg-stone-50/50">
+
+            <!-- SECTION: Experience (Timeline) -->
+            <div id="view-experience" class="animate-fade-in block">
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2">Professional Experience</h3>
+                    <p class="text-sm text-stone-500">A track record of blending creative production with operational agility. Click on any role to view detailed achievements.</p>
+                </div>
+
+                <div class="relative space-y-8 pl-2" id="experience-list">
+                    <!-- JS Injected Content -->
+                </div>
+            </div>
+
+            <!-- SECTION: Impact (Charts) -->
+            <div id="view-impact" class="hidden animate-fade-in">
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2">Performance & Impact</h3>
+                    <p class="text-sm text-stone-500">Visualizing the scale of content reach and the balance between creative and analytical methodologies.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Chart 1: Content Reach -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                        <h4 class="font-bold text-stone-700 mb-4 text-center">Brand Reach (Trey24k)</h4>
+                        <div class="chart-container">
+                            <canvas id="reachChart"></canvas>
+                        </div>
+                        <p class="mt-4 text-xs text-center text-stone-400">Achieved via data-driven content strategies.</p>
+                    </div>
+
+                    <!-- Chart 2: Skill Distribution -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                        <h4 class="font-bold text-stone-700 mb-4 text-center">The Hybrid Profile</h4>
+                        <div class="chart-container">
+                            <canvas id="skillChart"></canvas>
+                        </div>
+                        <p class="mt-4 text-xs text-center text-stone-400">Bridging the gap between Design and ROI.</p>
+                    </div>
+                </div>
+                
+                <!-- Key Metrics Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl font-bold text-orange-800">18M+</div>
+                        <div class="text-xs uppercase tracking-wide text-stone-500">Total Views</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl font-bold text-stone-800">200M+</div>
+                        <div class="text-xs uppercase tracking-wide text-stone-500">Impressions</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl font-bold text-stone-800">5+</div>
+                        <div class="text-xs uppercase tracking-wide text-stone-500">Years Exp.</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
+                        <div class="text-2xl font-bold text-orange-800">3</div>
+                        <div class="text-xs uppercase tracking-wide text-stone-500">Languages</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: Skills -->
+            <div id="view-skills" class="hidden animate-fade-in">
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-2">Technical Proficiency</h3>
+                    <p class="text-sm text-stone-500">A comprehensive toolkit spanning creative production, analytics, and marketing platforms.</p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-8">
+                    <!-- Marketing & Analytics -->
+                    <div class="bg-white p-6 rounded-lg border border-stone-200">
+                        <h4 class="font-bold text-orange-900 mb-4 flex items-center gap-2">📊 Performance & Analytics</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Salesforce CRM</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Google Ads</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Meta Business Suite</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Excel (Advanced)</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">YouTube Studio</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Competitor Tracking</span>
+                        </div>
+                    </div>
+
+                    <!-- Creative -->
+                    <div class="bg-white p-6 rounded-lg border border-stone-200">
+                        <h4 class="font-bold text-stone-800 mb-4 flex items-center gap-2">🎨 Creative & Motion</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Motion Design</span>
+                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Video Editing</span>
+                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Storytelling</span>
+                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Adobe After Effects</span>
+                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Photoshop</span>
+                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Illustrator</span>
+                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Figma</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION: Education & Footer -->
+            <div class="mt-12 pt-8 border-t border-stone-200">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-bold text-stone-900 mb-4">Education</h4>
+                        <div class="mb-4">
+                            <div class="font-semibold">Bachelor Degree in Design</div>
+                            <div class="text-sm text-stone-600">IADE - Creative University</div>
+                            <div class="text-xs text-stone-400">2020 - 2023</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-stone-900 mb-4">Languages</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex justify-between border-b border-stone-100 pb-1"><span>Portuguese</span> <span class="text-stone-500">Native</span></li>
+                            <li class="flex justify-between border-b border-stone-100 pb-1"><span>English</span> <span class="text-stone-500">Fluent</span></li>
+                            <li class="flex justify-between border-b border-stone-100 pb-1"><span>Spanish</span> <span class="text-stone-500">Beginner</span></li>
+                            <li class="flex justify-between border-b border-stone-100 pb-1"><span>Japanese</span> <span class="text-stone-500">Beginner (Learning)</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // --- DATA STORE ---
+        const experiences = [
+            {
+                role: "Multichannel Coordinator",
+                company: "Agilidade",
+                period: "Sep 2025 - Present",
+                type: "Performance Dept.",
+                description: "Bridging the gap between CRM data and creative output to optimize lead conversion.",
+                tasks: [
+                    "Orchestrating the qualification and transition of leads (Cold/Hot) into Salesforce CRM.",
+                    "Executing targeted paid campaigns (Meta Ads/Google Ads) for health brands: Agilcare, Sorriso+, and Oral Health initiatives.",
+                    "Creating motion graphics and storytelling video content tailored to specific audience segments.",
+                    "Coordinating social media strategy to align organic reach with paid performance goals."
+                ]
+            },
+            {
+                role: "Motion & Digital Content Designer",
+                company: "Trey24k",
+                period: "July 2022 - Sep 2025",
+                type: "Full-time",
+                description: "Spearheaded brand growth through data-backed content creation strategies.",
+                tasks: [
+                    "Responsible for creating the branding image achieving over 18 million views and 200 million impressions.",
+                    "Analyzed content performance metrics to adjust creative strategies in real-time.",
+                    "Collaborated with brand sponsors to align visual identity with messaging.",
+                    "Provided insight-driven recommendations based on audience engagement data."
+                ]
+            },
+            {
+                role: "Motion/Graphic Designer",
+                company: "Universidad Europea",
+                period: "May 2021 - July 2022",
+                type: "Internship",
+                description: "Created multi-channel visual materials for institutional and internal communications.",
+                tasks: [
+                    "Adapted visual materials for social media and internal campaigns.",
+                    "Supported strategic content planning in collaboration with marketing teams.",
+                    "Participated in creative reviews to enhance user interaction."
+                ]
+            },
+            {
+                role: "Motion/Graphic Designer",
+                company: "Clara Amarela",
+                period: "June 2020 - Aug 2020",
+                type: "Contract",
+                description: "Delivered brand-compliant visual content for major clients like BP and RE/MAX.",
+                tasks: [
+                    "Managed tight deadlines while ensuring brand consistency.",
+                    "Produced visual assets for high-profile corporate clients."
+                ]
+            }
+        ];
+
+        // --- RENDER LOGIC ---
+
+        function renderExperience() {
+            const container = document.getElementById('experience-list');
+            container.innerHTML = '<div class="timeline-line"></div>'; // Reset with line
+
+            experiences.forEach((job, index) => {
+                const isFirst = index === 0;
+                
+                const html = `
+                <div class="relative z-10 pl-12 group cursor-pointer" onclick="toggleJob(${index})">
+                    <!-- Dot -->
+                    <div class="absolute left-[20px] top-1.5 w-2.5 h-2.5 rounded-full border-2 ${isFirst ? 'bg-orange-600 border-orange-600' : 'bg-white border-stone-400 group-hover:border-orange-500'} transition-colors"></div>
+                    
+                    <!-- Card -->
+                    <div class="bg-white p-5 rounded-lg border border-stone-200 shadow-sm hover:shadow-md transition-all ${isFirst ? 'border-l-4 border-l-orange-800' : ''}">
+                        <div class="flex justify-between items-start flex-col sm:flex-row mb-2">
+                            <div>
+                                <h4 class="font-bold text-lg text-stone-900">${job.role}</h4>
+                                <div class="text-orange-900 font-medium">${job.company}</div>
+                            </div>
+                            <div class="text-xs font-semibold uppercase tracking-wider text-stone-500 bg-stone-100 px-2 py-1 rounded mt-2 sm:mt-0">${job.period}</div>
+                        </div>
+                        
+                        <p class="text-sm text-stone-600 italic mb-3">${job.description}</p>
+                        
+                        <!-- Details (Collapsible) -->
+                        <div id="job-details-${index}" class="hidden overflow-hidden transition-all duration-300 ease-in-out border-t border-stone-100 pt-3 mt-2">
+                            <ul class="space-y-2">
+                                ${job.tasks.map(task => `<li class="text-sm text-stone-700 flex items-start gap-2"><span class="text-orange-400 mt-1">▸</span> ${task}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="text-center mt-2">
+                            <span id="job-chevron-${index}" class="text-xs text-stone-400 hover:text-orange-600 transition-colors">▼ View Details</span>
+                        </div>
+                    </div>
+                </div>`;
+                container.innerHTML += html;
+            });
+            
+            // Auto expand the first job
+            toggleJob(0);
+        }
+
+        function toggleJob(index) {
+            const details = document.getElementById(`job-details-${index}`);
+            const chevron = document.getElementById(`job-chevron-${index}`);
+            
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                chevron.innerText = "▲ Close Details";
+                chevron.classList.add('text-orange-600');
+            } else {
+                details.classList.add('hidden');
+                chevron.innerText = "▼ View Details";
+                chevron.classList.remove('text-orange-600');
+            }
+        }
+
+        function switchTab(tabName) {
+            // Update Buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('border-orange-900', 'text-orange-900');
+                btn.classList.add('border-transparent', 'text-stone-400');
+            });
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.remove('border-transparent', 'text-stone-400');
+            activeBtn.classList.add('border-orange-900', 'text-orange-900');
+
+            // Update Views
+            ['experience', 'impact', 'skills'].forEach(view => {
+                document.getElementById(`view-${view}`).classList.add('hidden');
+            });
+            const activeView = document.getElementById(`view-${tabName}`);
+            activeView.classList.remove('hidden');
+
+            // Trigger chart render if switching to impact tab (and not rendered yet)
+            if (tabName === 'impact') {
+                renderCharts();
+            }
+        }
+
+        // --- CHARTS CONFIG ---
+        let chartsRendered = false;
+
+        function renderCharts() {
+            if (chartsRendered) return;
+
+            // Chart 1: Reach
+            const ctxReach = document.getElementById('reachChart').getContext('2d');
+            new Chart(ctxReach, {
+                type: 'bar',
+                data: {
+                    labels: ['Views (M)', 'Impressions (M)'],
+                    datasets: [{
+                        label: 'Metrics',
+                        data: [18, 200],
+                        backgroundColor: ['#c2410c', '#44403c'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'Millions' } }
+                    }
+                }
+            });
+
+            // Chart 2: Skills Balance (Creative vs Analytical)
+            // Using a Doughnut to show the "Whole Brain" approach
+            const ctxSkill = document.getElementById('skillChart').getContext('2d');
+            new Chart(ctxSkill, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Creative / Motion', 'Analytical / Strategy', 'Tech / Tools'],
+                    datasets: [{
+                        data: [40, 30, 30], // Approximate distribution based on CV
+                        backgroundColor: ['#fdba74', '#7c2d12', '#a8a29e'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10 } } }
+                    }
+                }
+            });
+
+            chartsRendered = true;
+        }
+
+        // --- INITIALIZATION ---
+        window.onload = function() {
+            renderExperience();
+        };
+
+    </script>
+</body>
+</html>
