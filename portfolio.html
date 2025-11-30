@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMUEL COSTA | ARCHIVE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-color: #F3F3F3; --text-main: #0A0A0A; --border-color: #0A0A0A; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Space Mono', monospace; overflow-x: hidden; }
+        .font-display { font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.85; letter-spacing: 0.02em; }
+        .border-black { border-color: var(--border-color); }
+        @keyframes gridPan { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
+        .grid-bg { background-size: 40px 40px; background-image: linear-gradient(to right, #d4d4d4 1px, transparent 1px), linear-gradient(to bottom, #d4d4d4 1px, transparent 1px); animation: gridPan 4s linear infinite; }
+        .project-card:hover .project-image { filter: grayscale(0%); transform: scale(1.02); }
+        .project-image { filter: grayscale(100%); transition: all 0.5s ease; }
+    </style>
+</head>
+<body class="selection:bg-black selection:text-white">
+
+    <nav class="fixed top-0 w-full z-50 bg-[#F3F3F3]/90 backdrop-blur-sm border-b border-black flex justify-between items-center px-4 py-3 md:px-8 text-xs md:text-sm font-bold uppercase tracking-widest">
+        <a href="index.html" class="hover:line-through cursor-pointer opacity-50">← Back to Index</a>
+        <div class="hidden md:flex gap-12"><span class="opacity-30">[ PORTFOLIO ARCHIVE ]</span></div>
+        <a href="mailto:sanchescosta.samuel@gmail.com" class="hover:bg-black hover:text-white px-2 py-1 transition-colors flex items-center gap-2">CONTACT ME <span>↗</span></a>
+    </nav>
+
+    <header class="pt-32 pb-16 px-4 md:px-8 border-b border-black relative grid-bg">
+        <h1 class="font-display text-[12vw] leading-none">SELECTED<br>WORKS</h1>
+        <div class="flex justify-between items-end mt-8 border-t-2 border-black pt-4">
+            <div class="text-xs font-bold uppercase max-w-xs">/ DIGITAL STRATEGY<br>/ CONTENT GROWTH</div>
+            <div class="font-mono text-xs md:text-sm text-right">[ DATABASE: 03 KEY PROJECTS ]</div>
+        </div>
+    </header>
+
+    <section>
+        
+        <!-- PROJECT 01: TREY24K -->
+        <div class="project-card group border-b border-black grid grid-cols-1 md:grid-cols-2 min-h-[50vh]">
+            <!-- Visual Side -->
+            <div class="border-r border-black overflow-hidden relative bg-black/5 min-h-[300px]">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2670&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="Trey24k Analytics">
+                <div class="absolute top-4 left-4 bg-black text-white px-2 py-1 text-xs font-bold font-mono">CASE 01.</div>
+            </div>
+            
+            <!-- Info Side -->
+            <div class="p-8 md:p-12 flex flex-col justify-between bg-[#F3F3F3]">
+                <div>
+                    <h2 class="font-display text-5xl md:text-7xl mb-4 group-hover:translate-x-2 transition-transform">TREY24K<br>GROWTH</h2>
+                    <div class="flex gap-2 mb-8">
+                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">YouTube & TikTok</span>
+                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">Revenue Ops</span>
+                    </div>
+                    
+                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4">
+                        <p>Managed social platforms and content strategy, directly contributing to massive channel scaling and monetization.</p>
+                        
+                        <ul class="border-l-2 border-black pl-4 space-y-2 mt-4">
+                            <li><span class="font-bold">> 40 MILLION+</span> Total Views Generated</li>
+                            <li><span class="font-bold">> 3.6 MILLION</span> Watch Hours</li>
+                            <li><span class="font-bold">> $100,000+</span> Revenue Contributed</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8 flex gap-4">
+                    <!-- LINK ATUALIZADO: Substitui # pelo link do canal Trey24k se quiseres -->
+                    <a href="https://www.youtube.com/@Trey24k" target="_blank" class="inline-block bg-black text-white px-6 py-3 font-mono text-xs font-bold hover:bg-transparent hover:text-black border-2 border-black transition-all">[ VIEW YOUTUBE ]</a>
+                    <a href="https://www.tiktok.com/@trey24k" target="_blank" class="inline-block bg-transparent text-black px-6 py-3 font-mono text-xs font-bold hover:bg-black hover:text-white border-2 border-black transition-all">[ VIEW TIKTOK ]</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECT 02: TIGZ -->
+        <div class="project-card group border-b border-black grid grid-cols-1 md:grid-cols-2 min-h-[50vh]">
+            <!-- Info Side (Swapped) -->
+            <div class="p-8 md:p-12 flex flex-col justify-between bg-[#F3F3F3] border-r border-black order-2 md:order-1">
+                <div>
+                    <h2 class="font-display text-5xl md:text-7xl mb-4 group-hover:translate-x-2 transition-transform">TIGZ<br>MEDIA</h2>
+                    <div class="flex gap-2 mb-8">
+                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">Channel Mgmt</span>
+                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">Performance</span>
+                    </div>
+                    
+                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4">
+                        <p>Collaborated on planning, publishing, and deep performance analysis to strengthen fanbase connection.</p>
+                        
+                        <ul class="border-l-2 border-black pl-4 space-y-2 mt-4">
+                            <li><span class="font-bold">> 10 MILLION</span> Total Views Surpassed</li>
+                            <li><span class="font-bold">> STRATEGY</span> Planning & Publishing</li>
+                            <li><span class="font-bold">> ENGAGEMENT</span> Fanbase Growth</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <!-- LINK ATUALIZADO -->
+                    <a href="https://www.youtube.com/@Tigz" target="_blank" class="inline-block bg-black text-white px-6 py-3 font-mono text-xs font-bold hover:bg-transparent hover:text-black border-2 border-black transition-all">[ VIEW CHANNEL ]</a>
+                </div>
+            </div>
+            
+            <!-- Visual Side -->
+            <div class="overflow-hidden relative bg-black/5 order-1 md:order-2 min-h-[300px]">
+                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2574&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="Tigz Project">
+                <div class="absolute top-4 left-4 bg-black text-white px-2 py-1 text-xs font-bold font-mono">CASE 02.</div>
+            </div>
+        </div>
+
+        <!-- PROJECT 03: UNIVERSIDAD EUROPEA -->
+        <div class="project-card group border-b border-black grid grid-cols-1 md:grid-cols-2 min-h-[50vh]">
+            <!-- Visual Side -->
+            <div class="border-r border-black overflow-hidden relative bg-black/5 min-h-[300px]">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2670&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="University Project">
+                <div class="absolute top-4 left-4 bg-black text-white px-2 py-1 text-xs font-bold font-mono">CASE 03.</div>
+            </div>
+            
+            <!-- Info Side -->
+            <div class="p-8 md:p-12 flex flex-col justify-between bg-[#F3F3F3]">
+                <div>
+                    <h2 class="font-display text-5xl md:text-7xl mb-4 group-hover:translate-x-2 transition-transform">ACADEMIC<br>GROUP</h2>
+                    <div class="flex gap-2 mb-8">
+                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">Universidade Europeia</span>
+                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">IADE / IPAM</span>
+                    </div>
+                    
+                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4">
+                        <p>Motion design and social media content for a major educational group. Created campaigns for 'Mestrado Gestão de Marketing' and student engagement.</p>
+                        
+                        <ul class="border-l-2 border-black pl-4 space-y-2 mt-4">
+                            <li><span class="font-bold">> MULTI-CHANNEL</span> Institutional Campaigns</li>
+                            <li><span class="font-bold">> BRANDING</span> Internal Comms</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <!-- Link placeholder para Behance ou site da UE -->
+                    <a href="https://www.behance.net/" target="_blank" class="inline-block bg-black text-white px-6 py-3 font-mono text-xs font-bold hover:bg-transparent hover:text-black border-2 border-black transition-all">[ VIEW ON BEHANCE ]</a>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer class="p-8 md:p-12 flex justify-between items-center bg-black text-white">
+        <div class="font-display text-2xl">S. COSTA</div>
+        <div class="text-xs font-mono opacity-50">END OF ARCHIVE</div>
+    </footer>
+
+</body>
+</html>
