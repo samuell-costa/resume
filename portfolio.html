@@ -3,88 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMUEL COSTA | PORTFOLIO</title>
+    <title>SAMUEL COSTA | ARCHIVE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
-    
-    <!-- Fonts: Anton (Extra Bold) & Space Mono (Technical) -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-
     <style>
-        :root {
-            --bg-color: #F3F3F3;
-            --text-main: #0A0A0A;
-            --border-color: #0A0A0A;
-            --grid-color: #d4d4d4;
-        }
-
-        .dark-mode {
-            --bg-color: #0A0A0A;
-            --text-main: #F3F3F3;
-            --border-color: #F3F3F3;
-            --grid-color: #333333;
-        }
-
-        /* --- SMOOTH SCROLL --- */
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 80px; 
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Space Mono', monospace;
+        :root { --bg-color: #F3F3F3; --text-main: #0A0A0A; --border-color: #0A0A0A; --grid-color: #d4d4d4; }
+        .dark-mode { --bg-color: #0A0A0A; --text-main: #F3F3F3; --border-color: #F3F3F3; --grid-color: #333333; }
+        
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: 'Space Mono', monospace; 
             overflow-x: hidden;
             transition: background-color 0.3s, color 0.3s;
             
-            /* GRID BACKGROUND (DIAGONAL ANIMATION RESTORED) */
+            /* GRID BACKGROUND */
             background-size: 40px 40px;
             background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
                               linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-            animation: gridPan 4s linear infinite; 
-        }
-
-        .font-display {
-            font-family: 'Anton', sans-serif;
-            text-transform: uppercase;
-            line-height: 0.85;
-            letter-spacing: 0.02em;
-        }
-
-        .border-theme {
-            border-color: var(--border-color);
-        }
-
-        /* Grid Animation (Diagonal Movement) */
-        @keyframes gridPan {
-            0% { background-position: 0 0; }
-            100% { background-position: 40px 40px; } 
-        }
-
-        /* Marquee & Scrollbar */
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-            display: flex;
+            animation: gridPan 60s linear infinite;
         }
         
-        .marquee-content {
-            display: inline-block;
-            animation: marquee 40s linear infinite; 
-            padding-right: 50px;
-        }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        .font-display { font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.85; letter-spacing: 0.02em; }
+        .border-theme { border-color: var(--border-color); }
+        @keyframes gridPan { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
+        .project-card:hover .project-image { filter: grayscale(0%); transform: scale(1.02); }
+        .project-image { filter: grayscale(100%); transition: all 0.5s ease; }
         
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); border-left: 1px solid var(--border-color); }
-        ::-webkit-scrollbar-thumb { background: var(--text-main); }
-        
-        /* Chart Styling */
-        canvas { filter: grayscale(100%) contrast(120%); }
-        .dark-mode canvas { filter: invert(1) grayscale(100%) contrast(120%); }
-
         /* Navigation Link Hover Style */
         .nav-item { cursor: pointer; transition: all 0.2s ease; }
         .nav-item:hover { background-color: var(--text-main); color: var(--bg-color); }
@@ -92,188 +37,155 @@
 </head>
 <body class="selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
 
-    <!-- TOP NAVIGATION (CLEANED UP) -->
+    <!-- NAVIGATION (MATCHING INDEX STYLE) -->
     <nav class="fixed top-0 w-full z-50 backdrop-blur-md border-b border-theme flex justify-between items-center px-4 py-3 md:px-8 text-xs md:text-sm font-bold uppercase tracking-widest transition-colors duration-300">
         
-        <!-- Logo (Left) -->
-        <div class="hover:line-through cursor-pointer opacity-70 leading-tight">
-            <div>S. COSTA //</div>
-            <div>2025</div>
+        <!-- Back Link -->
+        <a href="index.html" class="hover:line-through cursor-pointer opacity-70 w-1/4">← BACK TO INDEX</a>
+
+        <!-- Center Title -->
+        <div class="hidden md:flex justify-center w-1/2">
+            <span class="opacity-30">[ PORTFOLIO ARCHIVE ]</span>
         </div>
 
-        <!-- Center Menu (With clean Portfolio button) -->
-        <div class="hidden md:flex gap-8 items-center absolute left-1/2 -translate-x-1/2">
-            <a href="#about" class="nav-item px-2 py-1">[ ABOUT ]</a>
-            <!-- Removed border to fix visual bug, now just bold hover effect -->
-            <a href="portfolio.html" class="nav-item px-2 py-1 hover:text-red-500 transition-colors">
-                [ PORTFOLIO ]
-            </a>
-            <a href="#experience" class="nav-item px-2 py-1">[ EXPERIENCE ]</a>
-            <a href="#analytics" class="nav-item px-2 py-1">[ DATA ]</a>
-            <a href="contact.html" class="nav-item px-2 py-1">[ CONTACT ]</a>
-        </div>
-
-        <!-- Right Side (Dark Mode Toggle ONLY) -->
-        <div class="flex justify-end">
+        <!-- Right Actions -->
+        <div class="flex gap-4 items-center justify-end w-1/4">
+            <!-- Dark Mode Toggle -->
             <button onclick="toggleDarkMode()" class="nav-item px-2 py-1 border border-theme flex items-center gap-2 cursor-pointer">
                 [ ◐ ]
             </button>
+            <a href="contact.html" class="nav-item px-2 py-1 transition-colors flex items-center gap-1 border border-transparent hover:border-theme">
+                CONTACT ME <span>↗</span>
+            </a>
         </div>
     </nav>
 
-    <!-- HERO SECTION (SPLIT LAYOUT RESTORED + BUTTON UNDER NAME) -->
-    <header id="about" class="pt-32 pb-16 px-4 md:px-8 border-b border-theme relative flex flex-col justify-center min-h-[60vh]">
-        
-        <!-- Tech Header -->
-        <div class="flex justify-between text-[10px] md:text-xs font-bold uppercase mb-12 opacity-60">
-            <span>Lat: 38.7223° N</span>
-            <span>Based in Portugal</span>
-            <span>Ver: 2.8.0</span>
-        </div>
-
-        <!-- TITLE LOCKUP + BUTTON UNDERNEATH -->
-        <div class="flex flex-col items-start z-10 w-full">
-            <h1 class="font-display text-[11vw] md:text-[10vw] leading-[0.85] tracking-tight text-left">
-                SAMUEL
-                <span class="block h-4 md:h-8"></span> 
-                
-                <div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8 justify-start">
-                    <span>COSTA</span>
-                    
-                    <!-- Role Group -->
-                    <div class="font-mono text-sm md:text-lg tracking-widest opacity-80 max-w-[200px] leading-tight mt-2 md:mt-0 border-l-2 border-theme pl-4 md:border-l-0 md:pl-0 text-left">
-                        / CREATIVE<br>STRATEGIST
-                    </div>
-                </div>
-            </h1>
-
-            <!-- BUTTON PLACED HERE (UNDER NAME) -->
-            <div class="mt-8 md:mt-12">
-                <a href="portfolio.html" class="inline-block bg-[var(--text-main)] text-[var(--bg-color)] px-8 py-4 font-mono text-sm font-bold border-2 border-theme hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
-                    [ OPEN PORTFOLIO ]
-                </a>
-            </div>
-        </div>
-
-        <!-- Bottom Hero Text -->
-        <div class="flex flex-col md:flex-row justify-between items-end gap-6 mt-16 md:mt-24 z-10">
-            <div class="text-xs font-bold uppercase max-w-xs opacity-70 order-2 md:order-1 text-left">
-                 / Motion Design<br>
-                 / Performance Data<br>
-                 / CRM & Strategy
-            </div>
-
-            <div class="text-right max-w-md bg-[var(--bg-color)]/90 backdrop-blur-sm p-2 border border-theme shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] transition-colors duration-300 order-1 md:order-2 ml-auto">
-                <p class="text-xs md:text-sm leading-relaxed uppercase font-bold text-right">
-                    Bridging the gap between visual storytelling and performance data. 
-                    Optimizing lead flows at Agilidade.
-                </p>
-            </div>
+    <header class="pt-32 pb-16 px-4 md:px-8 border-b border-theme relative flex flex-col justify-center min-h-[50vh]">
+        <h1 class="font-display text-[12vw] leading-none">SELECTED<br>WORKS</h1>
+        <div class="flex justify-between items-end mt-8 border-t-2 border-theme pt-4">
+            <div class="text-xs font-bold uppercase max-w-xs">/ DIGITAL STRATEGY<br>/ CONTENT GROWTH</div>
+            <div class="font-mono text-xs md:text-sm text-right">[ DATABASE: 03 KEY PROJECTS ]</div>
         </div>
     </header>
 
-    <!-- PERFECT INFINITE MARQUEE -->
-    <div class="border-b border-theme bg-[var(--text-main)] text-[var(--bg-color)] py-2 overflow-hidden transition-colors duration-300">
-        <div class="marquee-container text-lg md:text-xl font-display uppercase tracking-wide">
-            <div class="marquee-content">
-                Performance Marketing — Motion Design — Salesforce CRM — Lead Generation — 18M+ Views — Branding — Strategy — Analytics — Performance Marketing — Motion Design — Salesforce CRM — Lead Generation — 18M+ Views — Branding — Strategy — Analytics — &nbsp;
+    <section>
+        
+        <!-- PROJECT 01: TREY24K -->
+        <div class="project-card group border-b border-theme grid grid-cols-1 md:grid-cols-2 min-h-[50vh] bg-[var(--bg-color)]/50 backdrop-blur-sm">
+            <!-- Visual Side -->
+            <div class="border-r border-theme overflow-hidden relative bg-[var(--bg-color)] min-h-[300px]">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2670&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="Trey24k Analytics">
+                <div class="absolute top-4 left-4 bg-[var(--text-main)] text-[var(--bg-color)] px-2 py-1 text-xs font-bold font-mono">CASE 01.</div>
             </div>
-            <div class="marquee-content">
-                Performance Marketing — Motion Design — Salesforce CRM — Lead Generation — 18M+ Views — Branding — Strategy — Analytics — Performance Marketing — Motion Design — Salesforce CRM — Lead Generation — 18M+ Views — Branding — Strategy — Analytics — &nbsp;
-            </div>
-        </div>
-    </div>
-
-    <!-- EXPERIENCE SECTION -->
-    <section id="experience" class="border-b border-theme bg-[var(--bg-color)]/50 backdrop-blur-sm">
-        <div class="grid grid-cols-1 md:grid-cols-12 min-h-[60vh]">
             
-            <div class="md:col-span-2 p-4 md:p-8 border-b md:border-b-0 md:border-r border-theme font-bold text-xs uppercase sticky top-16 h-fit bg-[var(--bg-color)] transition-colors duration-300">
-                [ 02 — Work History ]
-            </div>
-
-            <div class="md:col-span-10">
-                <!-- Job Items -->
-                <div class="group border-b border-theme hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors cursor-pointer" onclick="toggleDetails('job1')">
-                    <div class="p-6 py-12 md:px-8 md:py-20 flex flex-col md:flex-row justify-between items-baseline gap-4">
-                        <span class="font-display text-4xl md:text-6xl">MULTICHANNEL COORD.</span>
-                        <div class="text-right"><div class="text-sm font-bold">AGILIDADE</div><div class="text-xs opacity-70">SEP 2025 — PRESENT</div></div>
+            <!-- Info Side -->
+            <div class="p-8 md:p-12 flex flex-col justify-between">
+                <div>
+                    <h2 class="font-display text-5xl md:text-7xl mb-4 group-hover:translate-x-2 transition-transform">TREY24K<br>GROWTH</h2>
+                    <div class="flex gap-2 mb-8">
+                        <span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors">YouTube & TikTok</span>
+                        <span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors">Revenue Ops</span>
                     </div>
-                    <div id="job1" class="max-h-0 overflow-hidden transition-all duration-500 px-6 md:px-8">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 pb-12 border-t border-current">
-                            <div class="text-sm font-mono leading-relaxed max-w-md space-y-6"><p>Orchestrating the intersection of CRM data and creative production.</p><a href="portfolio.html" class="inline-block border border-current px-4 py-2 font-mono text-xs font-bold hover:opacity-70 transition-all">[ VIEW PORTFOLIO ]</a></div>
-                            <ul class="text-xs font-bold uppercase space-y-2 list-none"><li>[+] Lead Management</li><li>[+] Paid Media Strategy</li></ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group border-b border-theme hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors cursor-pointer" onclick="toggleDetails('job2')">
-                    <div class="p-6 py-12 md:px-8 md:py-20 flex flex-col md:flex-row justify-between items-baseline gap-4">
-                        <span class="font-display text-4xl md:text-6xl">MOTION DESIGNER</span>
-                        <div class="text-right"><div class="text-sm font-bold">TREY24K</div><div class="text-xs opacity-70">JUL 2022 — SEP 2025</div></div>
-                    </div>
-                    <div id="job2" class="max-h-0 overflow-hidden transition-all duration-500 px-6 md:px-8">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 pb-12 border-t border-current">
-                            <div class="text-sm font-mono leading-relaxed max-w-md space-y-6"><p>Achieving massive organic growth through data-backed video iteration.</p><a href="portfolio.html" class="inline-block border border-current px-4 py-2 font-mono text-xs font-bold hover:opacity-70 transition-all">[ VIEW PORTFOLIO ]</a></div>
-                            <div class="flex flex-row gap-8 justify-start md:justify-end items-end"><div><div class="font-display text-5xl md:text-6xl">50M+</div><div class="text-xs uppercase">Total Views</div></div><div><div class="font-display text-5xl md:text-6xl">200M+</div><div class="text-xs uppercase">Impressions</div></div></div>
-                        </div>
+                    
+                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4">
+                        <p>Managed social platforms and content strategy, directly contributing to massive channel scaling and monetization.</p>
+                        <ul class="border-l-2 border-theme pl-4 space-y-2 mt-4">
+                            <li><span class="font-bold">> 40 MILLION+</span> Total Views Generated</li>
+                            <li><span class="font-bold">> 3.6 MILLION</span> Watch Hours</li>
+                            <li><span class="font-bold">> $100,000+</span> Revenue Contributed</li>
+                        </ul>
                     </div>
                 </div>
-
-                <div class="group border-b border-theme hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors cursor-pointer" onclick="toggleDetails('job3')">
-                    <div class="p-6 py-12 md:px-8 md:py-20 flex flex-col md:flex-row justify-between items-baseline gap-4">
-                        <span class="font-display text-4xl md:text-6xl">VISUAL DESIGNER</span>
-                        <div class="text-right"><div class="text-sm font-bold">UNI. EUROPEA</div><div class="text-xs opacity-70">MAY 2021 — JUL 2022</div></div>
-                    </div>
-                    <div id="job3" class="max-h-0 overflow-hidden transition-all duration-500 px-6 md:px-8">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 pb-12 border-t border-current">
-                            <div class="text-sm font-mono leading-relaxed max-w-md space-y-6"><p>Created visual materials for multi-channel campaigns.</p><a href="portfolio.html" class="inline-block border border-current px-4 py-2 font-mono text-xs font-bold hover:opacity-70 transition-all">[ VIEW PORTFOLIO ]</a></div>
-                            <ul class="text-xs font-bold uppercase space-y-2 list-none"><li>[+] Institutional Branding</li></ul>
-                        </div>
-                    </div>
+                <div class="mt-8 flex flex-col md:flex-row gap-4">
+                    <a href="https://www.youtube.com/@Trey24k" target="_blank" class="inline-block bg-[var(--text-main)] text-[var(--bg-color)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] text-center">[ VIEW YOUTUBE ]</a>
+                    <a href="https://www.tiktok.com/@trey24k" target="_blank" class="inline-block bg-transparent text-[var(--text-main)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-all text-center">[ VIEW TIKTOK ]</a>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- DATA & SKILLS -->
-    <section id="analytics" class="border-b border-theme bg-[var(--bg-color)]/50 backdrop-blur-sm">
-        <div class="grid grid-cols-1 md:grid-cols-2">
-            <div class="border-r border-theme p-8 md:p-12">
-                <div class="mb-8 flex justify-between items-end"><h3 class="font-display text-4xl">IMPACT DATA</h3><span class="text-xs font-bold">[ SOURCE: TREY24K + TIGZ ]</span></div>
-                <div class="relative w-full h-64 border-2 border-theme p-4 bg-[var(--bg-color)] transition-colors duration-300"><canvas id="reachChart"></canvas></div>
-                <div class="mt-8 grid grid-cols-2 gap-4"><div class="border border-theme p-4"><div class="text-xs font-bold uppercase mb-2">Total Views</div><div class="font-display text-5xl">50M+</div></div><div class="border border-theme p-4"><div class="text-xs font-bold uppercase mb-2">Impressions</div><div class="font-display text-5xl">200M+</div></div></div>
-            </div>
-            <div class="p-8 md:p-12 bg-[var(--text-main)] text-[var(--bg-color)] transition-colors duration-300">
-                <h3 class="font-display text-4xl mb-8">TOOLKIT_V3</h3>
-                <div class="space-y-6">
-                    <div><h4 class="text-xs font-bold border-b border-current pb-2 mb-4 uppercase">/ Performance & CRM</h4><div class="flex flex-wrap gap-2"><span class="px-3 py-2 border border-current text-xs font-bold hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] cursor-crosshair">SALESFORCE</span><span class="px-3 py-2 border border-current text-xs font-bold hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] cursor-crosshair">GOOGLE ADS</span><span class="px-3 py-2 border border-current text-xs font-bold hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] cursor-crosshair">EXCEL</span></div></div>
-                    <div><h4 class="text-xs font-bold border-b border-current pb-2 mb-4 uppercase">/ Creative & Motion</h4><div class="flex flex-wrap gap-2"><span class="px-3 py-2 border border-current text-xs font-bold hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] cursor-crosshair">AFTER EFFECTS</span><span class="px-3 py-2 border border-current text-xs font-bold hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] cursor-crosshair">FIGMA</span></div></div>
+        <!-- PROJECT 02: TIGZ -->
+        <div class="project-card group border-b border-theme grid grid-cols-1 md:grid-cols-2 min-h-[50vh] bg-[var(--bg-color)]/50 backdrop-blur-sm">
+            <!-- Info Side (Swapped) -->
+            <div class="p-8 md:p-12 flex flex-col justify-between border-r border-theme order-2 md:order-1">
+                <div>
+                    <h2 class="font-display text-5xl md:text-7xl mb-4 group-hover:translate-x-2 transition-transform">TIGZ<br>MEDIA</h2>
+                    <div class="flex gap-2 mb-8">
+                        <span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors">Channel Mgmt</span>
+                        <span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors">Performance</span>
+                    </div>
+                    
+                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4">
+                        <p>Collaborated on planning, publishing, and deep performance analysis to strengthen fanbase connection.</p>
+                        <ul class="border-l-2 border-theme pl-4 space-y-2 mt-4">
+                            <li><span class="font-bold">> 10 MILLION</span> Total Views Surpassed</li>
+                            <li><span class="font-bold">> STRATEGY</span> Planning & Publishing</li>
+                            <li><span class="font-bold">> ENGAGEMENT</span> Fanbase Growth</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="mt-12 p-4 border border-current text-xs font-mono"><span class="blink">_</span> SYSTEM STATUS: OPEN FOR WORK</div>
+                <div class="mt-8">
+                    <a href="https://www.youtube.com/@Tigz" target="_blank" class="inline-block bg-[var(--text-main)] text-[var(--bg-color)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">[ VIEW CHANNEL ]</a>
+                </div>
+            </div>
+            
+            <!-- Visual Side -->
+            <div class="overflow-hidden relative bg-[var(--bg-color)] order-1 md:order-2 min-h-[300px]">
+                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2574&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="Tigz Project">
+                <div class="absolute top-4 left-4 bg-[var(--text-main)] text-[var(--bg-color)] px-2 py-1 text-xs font-bold font-mono">CASE 02.</div>
             </div>
         </div>
+
+        <!-- PROJECT 03: UNIVERSIDAD EUROPEA -->
+        <div class="project-card group border-b border-theme grid grid-cols-1 md:grid-cols-2 min-h-[50vh] bg-[var(--bg-color)]/50 backdrop-blur-sm">
+            <!-- Visual Side -->
+            <div class="border-r border-theme overflow-hidden relative bg-[var(--bg-color)] min-h-[300px]">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2670&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="University Project">
+                <div class="absolute top-4 left-4 bg-[var(--text-main)] text-[var(--bg-color)] px-2 py-1 text-xs font-bold font-mono">CASE 03.</div>
+            </div>
+            
+            <!-- Info Side -->
+            <div class="p-8 md:p-12 flex flex-col justify-between">
+                <div>
+                    <h2 class="font-display text-5xl md:text-7xl mb-4 group-hover:translate-x-2 transition-transform">ACADEMIC<br>GROUP</h2>
+                    <div class="flex gap-2 mb-8">
+                        <span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors">Universidade Europeia</span>
+                        <span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors">IADE / IPAM</span>
+                    </div>
+                    
+                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4">
+                        <p>Motion design and social media content for a major educational group. Created campaigns for 'Mestrado Gestão de Marketing' and student engagement.</p>
+                        <ul class="border-l-2 border-theme pl-4 space-y-2 mt-4">
+                            <li><span class="font-bold">> MULTI-CHANNEL</span> Institutional Campaigns</li>
+                            <li><span class="font-bold">> BRANDING</span> Internal Comms</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <a href="https://www.behance.net/" target="_blank" class="inline-block bg-[var(--text-main)] text-[var(--bg-color)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">[ VIEW ASSETS ]</a>
+                </div>
+            </div>
+        </div>
+
     </section>
 
-    <!-- FOOTER -->
-    <footer id="contact" class="p-8 md:p-12 flex flex-col md:flex-row justify-between items-end gap-8 bg-[var(--text-main)] text-[var(--bg-color)] transition-colors duration-300">
-        <div><h2 class="font-display text-6xl md:text-8xl leading-none">LET'S<br>WORK.</h2></div>
-        <div class="text-right space-y-2 text-xs font-bold uppercase"><a href="mailto:sanchescosta.samuel@gmail.com" class="block hover:underline">sanchescosta.samuel@gmail.com</a><div class="opacity-50 mt-4">© 2025 Samuel Costa</div></div>
+    <footer class="p-8 md:p-12 flex justify-between items-center bg-[var(--text-main)] text-[var(--bg-color)] border-t border-theme transition-colors duration-300">
+        <div class="font-display text-2xl">S. COSTA</div>
+        <div class="text-xs font-mono opacity-50">END OF ARCHIVE</div>
     </footer>
 
-    <!-- AI BUTTONS -->
-    <button onclick="toggleTerminal()" class="fixed bottom-8 right-8 z-50 bg-[var(--text-main)] text-[var(--bg-color)] px-6 py-3 font-mono text-xs font-bold border-2 border-[var(--bg-color)] hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] hover:border-[var(--text-main)] transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">[ ASK AI_AGENT ]</button>
-    <div id="ai-terminal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"><div class="bg-[#1a1a1a] w-full max-w-2xl border-2 border-[#333] shadow-2xl flex flex-col h-[600px] font-mono text-sm text-[#00ff00]"><div class="bg-[#333] p-2 flex justify-between items-center text-xs text-white uppercase"><span>TERMINAL — SAMUEL_AI_V1.0</span><button onclick="toggleTerminal()" class="hover:bg-red-600 px-2">X</button></div><div id="terminal-output" class="flex-1 p-4 overflow-y-auto space-y-4 font-bold"><div class="opacity-50">Initializing system... <br>Accessing Samuel Costa's CV data... <br>Ready.</div><div class="flex gap-2"><span class="text-white">sys_admin:</span><span>Hello. Ask me about Samuel's experience.</span></div></div><div class="p-4 border-t border-[#333] bg-black flex gap-2 items-center"><span class="animate-pulse">></span><input type="text" id="terminal-input" class="bg-transparent border-none outline-none text-[#00ff00] w-full font-mono placeholder-[#00ff00]/30 uppercase" placeholder="TYPE COMMAND..." autocomplete="off"></div></div></div>
-
     <script>
-        const apiKey = "";
-        const roleData = { agilidade: "Multichannel Coordinator...", trey: "Motion Designer...", ue: "Visual Designer...", skills: "Salesforce, Google Ads..." };
-        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
-        function toggleDetails(id) { const el = document.getElementById(id); if (el.style.maxHeight) { el.style.maxHeight = null; } else { el.style.maxHeight = el.scrollHeight + "px"; } }
-        function toggleTerminal() { const el = document.getElementById('ai-terminal'); el.classList.toggle('hidden'); if(!el.classList.contains('hidden')) { document.getElementById('terminal-input').focus(); } }
-        window.addEventListener('load', () => { if(typeof Chart !== 'undefined') { const ctx = document.getElementById('reachChart').getContext('2d'); Chart.defaults.color = '#888888'; Chart.defaults.font.family = "'Space Mono', monospace"; new Chart(ctx, { type: 'bar', data: { labels: ['VIEWS (M)', 'IMP. (M)'], datasets: [{ label: 'TREY24K + TIGZ', data: [50, 200], backgroundColor: '#888888', barThickness: 40 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, border: {color: '#888'} }, y: { grid: { display: false }, border: {color: '#888'} } } } }); } });
-        const input = document.getElementById('terminal-input'); const output = document.getElementById('terminal-output'); input.addEventListener('keypress', async function (e) { if (e.key === 'Enter') { const text = input.value; if(!text) return; output.innerHTML += `<div class="flex gap-2 mt-2"><span class="text-white">guest@portfolio:~$</span><span>${text}</span></div>`; input.value = ''; output.scrollTop = output.scrollHeight; const loadId = 'load-' + Date.now(); output.innerHTML += `<div id="${loadId}" class="opacity-50 mt-1">Processing...</div>`; const response = await callGemini(text); document.getElementById(loadId).remove(); output.innerHTML += `<div class="flex gap-2 mt-1 mb-4 text-white bg-[#00ff00]/10 p-2 border-l-2 border-[#00ff00]"><span>> ${response}</span></div>`; output.scrollTop = output.scrollHeight; } });
-        async function callGemini(prompt) { const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`; const context = `You are a CLI terminal assistant for Samuel Costa. Answer concisely in a technical, robotic tone. Data: ${JSON.stringify(roleData)}`; try { const res = await fetch(url, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: context }] } }) }); const data = await res.json(); return data.candidates[0].content.parts[0].text; } catch (e) { return "ERROR: CONNECTION_FAILED. RETRY."; } }
+        // Dark Mode Logic (Consistent with other pages)
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Apply saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
     </script>
+
 </body>
 </html>
