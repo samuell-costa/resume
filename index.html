@@ -222,7 +222,7 @@
         </main>
     </div>
 
-    <script>
+<script>
         // --- DATA STORE ---
         const experiences = [
             {
@@ -280,17 +280,19 @@
 
         function renderExperience() {
             const container = document.getElementById('experience-list');
-            container.innerHTML = '<div class="timeline-line"></div>'; // Reset with line
+            if (!container) return; // Segurança
+
+            // Correção: Construir o HTML todo numa variável primeiro
+            let fullHtml = '<div class="timeline-line"></div>'; 
 
             experiences.forEach((job, index) => {
                 const isFirst = index === 0;
                 
-                const html = `
+                // NOTA: Usar crases (backticks `) para permitir ${variável}
+                fullHtml += `
                 <div class="relative z-10 pl-12 group cursor-pointer" onclick="toggleJob(${index})">
-                    <!-- Dot -->
                     <div class="absolute left-[20px] top-1.5 w-2.5 h-2.5 rounded-full border-2 ${isFirst ? 'bg-orange-600 border-orange-600' : 'bg-white border-stone-400 group-hover:border-orange-500'} transition-colors"></div>
                     
-                    <!-- Card -->
                     <div class="bg-white p-5 rounded-lg border border-stone-200 shadow-sm hover:shadow-md transition-all ${isFirst ? 'border-l-4 border-l-orange-800' : ''}">
                         <div class="flex justify-between items-start flex-col sm:flex-row mb-2">
                             <div>
@@ -302,7 +304,6 @@
                         
                         <p class="text-sm text-stone-600 italic mb-3">${job.description}</p>
                         
-                        <!-- Details (Collapsible) -->
                         <div id="job-details-${index}" class="hidden overflow-hidden transition-all duration-300 ease-in-out border-t border-stone-100 pt-3 mt-2">
                             <ul class="space-y-2">
                                 ${job.tasks.map(task => `<li class="text-sm text-stone-700 flex items-start gap-2"><span class="text-orange-400 mt-1">▸</span> ${task}</li>`).join('')}
@@ -314,17 +315,21 @@
                         </div>
                     </div>
                 </div>`;
-                container.innerHTML += html;
             });
             
-            // Auto expand the first job
-            toggleJob(0);
+            // Inserir no DOM apenas uma vez (Melhor performance e evita erros de referência)
+            container.innerHTML = fullHtml;
+            
+            // Auto expandir o primeiro
+            setTimeout(() => toggleJob(0), 50); // Pequeno delay para garantir que o DOM está pronto
         }
 
         function toggleJob(index) {
             const details = document.getElementById(`job-details-${index}`);
             const chevron = document.getElementById(`job-chevron-${index}`);
             
+            if (!details || !chevron) return; // Evita erros se o elemento não for encontrado
+
             if (details.classList.contains('hidden')) {
                 details.classList.remove('hidden');
                 chevron.innerText = "▲ Close Details";
@@ -342,20 +347,26 @@
                 btn.classList.remove('border-orange-900', 'text-orange-900');
                 btn.classList.add('border-transparent', 'text-stone-400');
             });
+            
             const activeBtn = document.getElementById(`tab-${tabName}`);
-            activeBtn.classList.remove('border-transparent', 'text-stone-400');
-            activeBtn.classList.add('border-orange-900', 'text-orange-900');
+            if (activeBtn) {
+                activeBtn.classList.remove('border-transparent', 'text-stone-400');
+                activeBtn.classList.add('border-orange-900', 'text-orange-900');
+            }
 
             // Update Views
             ['experience', 'impact', 'skills'].forEach(view => {
-                document.getElementById(`view-${view}`).classList.add('hidden');
+                const el = document.getElementById(`view-${view}`);
+                if (el) el.classList.add('hidden');
             });
+            
             const activeView = document.getElementById(`view-${tabName}`);
-            activeView.classList.remove('hidden');
+            if (activeView) activeView.classList.remove('hidden');
 
-            // Trigger chart render if switching to impact tab (and not rendered yet)
+            // Trigger chart render if switching to impact tab
             if (tabName === 'impact') {
-                renderCharts();
+                // Pequeno delay para garantir que o container está visível antes de desenhar
+                setTimeout(renderCharts, 100); 
             }
         }
 
@@ -364,52 +375,62 @@
 
         function renderCharts() {
             if (chartsRendered) return;
+            
+            // Segurança: Verificar se Chart.js carregou
+            if (typeof Chart === 'undefined') {
+                console.error("Chart.js não foi carregado corretamente.");
+                return;
+            }
 
-            // Chart 1: Reach
-            const ctxReach = document.getElementById('reachChart').getContext('2d');
-            new Chart(ctxReach, {
-                type: 'bar',
-                data: {
-                    labels: ['Views (M)', 'Impressions (M)'],
-                    datasets: [{
-                        label: 'Metrics',
-                        data: [18, 200],
-                        backgroundColor: ['#c2410c', '#44403c'],
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, title: { display: true, text: 'Millions' } }
-                    }
-                }
-            });
+            const reachCanvas = document.getElementById('reachChart');
+            const skillCanvas = document.getElementById('skillChart');
 
-            // Chart 2: Skills Balance (Creative vs Analytical)
-            // Using a Doughnut to show the "Whole Brain" approach
-            const ctxSkill = document.getElementById('skillChart').getContext('2d');
-            new Chart(ctxSkill, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Creative / Motion', 'Analytical / Strategy', 'Tech / Tools'],
-                    datasets: [{
-                        data: [40, 30, 30], // Approximate distribution based on CV
-                        backgroundColor: ['#fdba74', '#7c2d12', '#a8a29e'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '70%',
-                    plugins: {
-                        legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10 } } }
+            if (reachCanvas) {
+                const ctxReach = reachCanvas.getContext('2d');
+                new Chart(ctxReach, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Views (M)', 'Impressions (M)'],
+                        datasets: [{
+                            label: 'Metrics',
+                            data: [18, 200],
+                            backgroundColor: ['#c2410c', '#44403c'],
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: 'Millions' } }
+                        }
                     }
-                }
-            });
+                });
+            }
+
+            if (skillCanvas) {
+                const ctxSkill = skillCanvas.getContext('2d');
+                new Chart(ctxSkill, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Creative / Motion', 'Analytical / Strategy', 'Tech / Tools'],
+                        datasets: [{
+                            data: [40, 30, 30],
+                            backgroundColor: ['#fdba74', '#7c2d12', '#a8a29e'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10 } } }
+                        }
+                    }
+                });
+            }
 
             chartsRendered = true;
         }
@@ -418,7 +439,7 @@
         window.onload = function() {
             renderExperience();
         };
-
     </script>
 </body>
+
 </html>
