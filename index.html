@@ -3,443 +3,473 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samuel Costa | Interactive CV & Portfolio</title>
+    <title>SAMUEL COSTA | PORTFOLIO</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    
+    <!-- Fonts: Anton (Extra Bold) & Space Mono (Technical) -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'Playfair Display', serif; }
-        
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
+        :root {
+            --bg-color: #F3F3F3;
+            --text-main: #0A0A0A;
+            --border-color: #0A0A0A;
+        }
+
+        /* --- SMOOTH SCROLL ENABLED HERE --- */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; /* Impede que o header tape o título da secção */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+            line-height: 0.85;
+            letter-spacing: 0.02em;
+        }
+
+        .border-black {
+            border-color: var(--border-color);
+        }
+
+        /* Marquee Animation */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); border-left: 1px solid var(--border-color); }
+        ::-webkit-scrollbar-thumb { background: var(--text-main); }
+        ::-webkit-scrollbar-thumb:hover { background: #333; }
+
+        /* Chart Styling Overrides */
+        canvas {
+            filter: grayscale(100%) contrast(120%);
         }
         
-        /* Custom Scrollbar for clean look */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f5f5f4; }
-        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+        /* --- DIAGONAL GRID ANIMATION --- */
+        @keyframes gridPan {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; } 
+        }
 
-        .timeline-line {
-            position: absolute;
-            left: 24px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background-color: #e7e5e4;
-            z-index: 0;
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, #d4d4d4 1px, transparent 1px),
+                              linear-gradient(to bottom, #d4d4d4 1px, transparent 1px);
+            animation: gridPan 4s linear infinite; 
         }
     </style>
-    <!-- Chosen Palette: Warm Neutrals. Background: Stone-50 (#fafaf9). Text: Stone-800 (#292524). Accents: Orange-900 (#7c2d12) for a professional, grounded, yet creative feel. -->
-    
-    <!-- Application Structure Plan: 
-         1. Hero Section: Immediate identity (Name, Role, Contacts) + Summary.
-         2. Interactive Dashboard (Tabs):
-            - Tab A: "Experience Journey" (Timeline). Users can expand/collapse roles. This solves the "summary" vs "detail" need.
-            - Tab B: "Impact & Data". Visualizes the 18M views/Analytics skills using Chart.js.
-            - Tab C: "Skills Matrix". categorized tags for Tools vs Soft Skills.
-         3. Education & Languages: clear, static cards.
-         Why: The user is both Creative and Analytical. A standard list doesn't show the "Data" side well. The dashboard approach proves the "Analytical" claim immediately.
-    -->
-
-    <!-- Visualization & Content Choices:
-         - Experience: Vertical timeline with accordion logic. Allows for "Resume" brevity (2 pages equivalent) while hiding deep content until requested.
-         - Impact: Bar Chart for Social Reach (Trey24k stats). Shows scale.
-         - Skills: Radar Chart or Grouped Lists. Chosen: Interactive Filterable List for clarity on mobile.
-         - Logic: Vanilla JS to handle state (current tab, expanded items).
-    -->
-    
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body class="bg-stone-50 text-stone-800 antialiased selection:bg-orange-200 selection:text-orange-900">
+<body class="selection:bg-black selection:text-white">
 
-    <!-- Main Container -->
-    <div class="max-w-4xl mx-auto min-h-screen flex flex-col shadow-2xl bg-white my-0 md:my-8">
+    <!-- TOP NAVIGATION -->
+    <nav class="fixed top-0 w-full z-50 bg-[#F3F3F3]/90 backdrop-blur-sm border-b border-black flex justify-between items-center px-4 py-3 md:px-8 text-xs md:text-sm font-bold uppercase tracking-widest">
+        <div class="hover:line-through cursor-pointer opacity-50">S. Costa // 2025</div>
+        <div class="hidden md:flex gap-12">
+            <a href="#about" class="hover:bg-black hover:text-white px-2 py-1 transition-colors">[ ABOUT ]</a>
+            <!-- Link direto no menu também -->
+            <a href="portfolio.html" class="bg-black text-white px-2 py-1 hover:bg-red-600 transition-colors">[ PORTFOLIO ]</a>
+            <a href="#experience" class="hover:bg-black hover:text-white px-2 py-1 transition-colors">[ EXPERIENCE ]</a>
+            <a href="#analytics" class="hover:bg-black hover:text-white px-2 py-1 transition-colors">[ DATA ]</a>
+        </div>
+        <a href="mailto:sanchescosta.samuel@gmail.com" class="hover:bg-black hover:text-white px-2 py-1 transition-colors flex items-center gap-2">
+            CONTACT ME <span>↗</span>
+        </a>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header id="about" class="pt-32 pb-16 px-4 md:px-8 border-b border-black relative grid-bg flex flex-col justify-center min-h-[60vh]">
         
-        <!-- Header / Hero -->
-        <header class="bg-white p-8 md:p-12 border-b border-stone-100 relative overflow-hidden">
-            <div class="relative z-10">
-                <div class="flex justify-between items-start flex-col md:flex-row gap-6">
-                    <div>
-                        <h1 class="text-4xl md:text-5xl font-bold text-stone-900 mb-2">Samuel Costa</h1>
-                        <h2 class="text-xl md:text-2xl text-orange-900 font-medium italic">Motion Designer & Multichannel Coordinator</h2>
-                        <div class="flex flex-wrap gap-4 mt-4 text-sm text-stone-500 font-medium">
-                            <span class="flex items-center gap-1">📍 Portugal</span>
-                            <span class="flex items-center gap-1">📧 sanchescosta.samuel@gmail.com</span>
-                            <a href="#" class="flex items-center gap-1 hover:text-orange-700 transition">🔗 LinkedIn</a>
-                            <a href="#" class="flex items-center gap-1 hover:text-orange-700 transition">🎨 Behance</a>
-                        </div>
-                    </div>
-                    <!-- Intro Paragraph -->
-                    <div class="md:max-w-xs text-sm leading-relaxed text-stone-600 border-l-2 border-orange-200 pl-4">
-                        <p>Creative and analytical strategist with 5+ years of experience bridging the gap between <strong>visual storytelling</strong> and <strong>performance data</strong>. Expert in transforming raw analytics into compelling creative campaigns that drive conversions.</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Decorative background element -->
-            <div class="absolute top-0 right-0 w-64 h-64 bg-orange-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50 z-0"></div>
-        </header>
+        <!-- Tech Header -->
+        <div class="flex justify-between text-[10px] md:text-xs font-bold uppercase mb-12 opacity-60">
+            <span>Lat: 38.7223° N</span>
+            <span>Based in Portugal</span>
+            <span>Ver: 2.3.1</span>
+        </div>
 
-        <!-- Navigation / Tabs -->
-        <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-stone-200">
-            <div class="flex overflow-x-auto no-scrollbar">
-                <button onclick="switchTab('experience')" id="tab-experience" class="nav-btn px-6 py-4 font-semibold text-sm uppercase tracking-wider border-b-2 border-orange-900 text-orange-900 transition-colors whitespace-nowrap">Professional Journey</button>
-                <button onclick="switchTab('impact')" id="tab-impact" class="nav-btn px-6 py-4 font-semibold text-sm uppercase tracking-wider border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-colors whitespace-nowrap">Impact Analytics</button>
-                <button onclick="switchTab('skills')" id="tab-skills" class="nav-btn px-6 py-4 font-semibold text-sm uppercase tracking-wider border-b-2 border-transparent text-stone-400 hover:text-stone-600 transition-colors whitespace-nowrap">Skills & Tools</button>
-            </div>
-        </nav>
-
-        <!-- Content Area -->
-        <main class="flex-grow p-6 md:p-12 bg-stone-50/50">
-
-            <!-- SECTION: Experience (Timeline) -->
-            <div id="view-experience" class="animate-fade-in block">
-                <div class="mb-8">
-                    <h3 class="text-xl font-bold mb-2">Professional Experience</h3>
-                    <p class="text-sm text-stone-500">A track record of blending creative production with operational agility. Click on any role to view detailed achievements.</p>
-                </div>
-
-                <div class="relative space-y-8 pl-2" id="experience-list">
-                    <!-- JS Injected Content -->
-                </div>
-            </div>
-
-            <!-- SECTION: Impact (Charts) -->
-            <div id="view-impact" class="hidden animate-fade-in">
-                <div class="mb-8">
-                    <h3 class="text-xl font-bold mb-2">Performance & Impact</h3>
-                    <p class="text-sm text-stone-500">Visualizing the scale of content reach and the balance between creative and analytical methodologies.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Chart 1: Content Reach -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
-                        <h4 class="font-bold text-stone-700 mb-4 text-center">Brand Reach (Trey24k)</h4>
-                        <div class="chart-container">
-                            <canvas id="reachChart"></canvas>
-                        </div>
-                        <p class="mt-4 text-xs text-center text-stone-400">Achieved via data-driven content strategies.</p>
-                    </div>
-
-                    <!-- Chart 2: Skill Distribution -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
-                        <h4 class="font-bold text-stone-700 mb-4 text-center">The Hybrid Profile</h4>
-                        <div class="chart-container">
-                            <canvas id="skillChart"></canvas>
-                        </div>
-                        <p class="mt-4 text-xs text-center text-stone-400">Bridging the gap between Design and ROI.</p>
-                    </div>
-                </div>
+        <!-- TITLE LOCKUP (Corrected Version) -->
+        <div class="flex flex-col items-start z-10">
+            
+            <h1 class="font-display text-[11vw] md:text-[10vw] leading-[0.85] tracking-tight">
+                SAMUEL
+                <span class="block h-4 md:h-8"></span> 
                 
-                <!-- Key Metrics Cards -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
-                        <div class="text-2xl font-bold text-orange-800">18M+</div>
-                        <div class="text-xs uppercase tracking-wide text-stone-500">Total Views</div>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
-                        <div class="text-2xl font-bold text-stone-800">200M+</div>
-                        <div class="text-xs uppercase tracking-wide text-stone-500">Impressions</div>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
-                        <div class="text-2xl font-bold text-stone-800">5+</div>
-                        <div class="text-xs uppercase tracking-wide text-stone-500">Years Exp.</div>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-center">
-                        <div class="text-2xl font-bold text-orange-800">3</div>
-                        <div class="text-xs uppercase tracking-wide text-stone-500">Languages</div>
+                <div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8">
+                    <span>COSTA</span>
+                    
+                    <!-- Role: Small, next to name -->
+                    <div class="font-mono text-sm md:text-lg tracking-widest opacity-80 max-w-[200px] leading-tight mt-2 md:mt-0 border-l-2 border-black pl-4 md:border-l-0 md:pl-0">
+                        / CREATIVE<br>STRATEGIST
                     </div>
                 </div>
+            </h1>
+
+        </div>
+
+        <!-- Bottom Hero Text & BUTTON -->
+        <div class="flex flex-col md:flex-row justify-between items-end gap-6 mt-16 md:mt-24 z-10">
+            <div class="text-xs font-bold uppercase max-w-xs opacity-70">
+                 / Motion Design<br>
+                 / Performance Data<br>
+                 / CRM & Strategy
             </div>
 
-            <!-- SECTION: Skills -->
-            <div id="view-skills" class="hidden animate-fade-in">
-                <div class="mb-8">
-                    <h3 class="text-xl font-bold mb-2">Technical Proficiency</h3>
-                    <p class="text-sm text-stone-500">A comprehensive toolkit spanning creative production, analytics, and marketing platforms.</p>
+            <!-- Text Box + Button -->
+            <div class="text-right max-w-md flex flex-col items-end gap-6">
+                <div class="bg-[#F3F3F3] p-2 border border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]">
+                    <p class="text-xs md:text-sm leading-relaxed uppercase font-bold">
+                        Bridging the gap between visual storytelling and performance data. 
+                        Optimizing lead flows at Agilidade.
+                    </p>
                 </div>
 
-                <div class="grid grid-cols-1 gap-8">
-                    <!-- Marketing & Analytics -->
-                    <div class="bg-white p-6 rounded-lg border border-stone-200">
-                        <h4 class="font-bold text-orange-900 mb-4 flex items-center gap-2">📊 Performance & Analytics</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Salesforce CRM</span>
-                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Google Ads</span>
-                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Meta Business Suite</span>
-                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Excel (Advanced)</span>
-                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">YouTube Studio</span>
-                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium">Competitor Tracking</span>
-                        </div>
-                    </div>
-
-                    <!-- Creative -->
-                    <div class="bg-white p-6 rounded-lg border border-stone-200">
-                        <h4 class="font-bold text-stone-800 mb-4 flex items-center gap-2">🎨 Creative & Motion</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Motion Design</span>
-                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Video Editing</span>
-                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Storytelling</span>
-                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Adobe After Effects</span>
-                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Photoshop</span>
-                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Illustrator</span>
-                            <span class="px-3 py-1 bg-orange-50 text-orange-800 rounded-full text-sm font-medium">Figma</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- NEW BUTTON HERE -->
+                <a href="portfolio.html" class="inline-block bg-black text-white px-8 py-4 font-mono text-sm font-bold border-2 border-black hover:bg-white hover:text-black transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
+                    [ OPEN PORTFOLIO ]
+                </a>
             </div>
+        </div>
+    </header>
 
-            <!-- SECTION: Education & Footer -->
-            <div class="mt-12 pt-8 border-t border-stone-200">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="font-bold text-stone-900 mb-4">Education</h4>
-                        <div class="mb-4">
-                            <div class="font-semibold">Bachelor Degree in Design</div>
-                            <div class="text-sm text-stone-600">IADE - Creative University</div>
-                            <div class="text-xs text-stone-400">2020 - 2023</div>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-stone-900 mb-4">Languages</h4>
-                        <ul class="space-y-2 text-sm">
-                            <li class="flex justify-between border-b border-stone-100 pb-1"><span>Portuguese</span> <span class="text-stone-500">Native</span></li>
-                            <li class="flex justify-between border-b border-stone-100 pb-1"><span>English</span> <span class="text-stone-500">Fluent</span></li>
-                            <li class="flex justify-between border-b border-stone-100 pb-1"><span>Spanish</span> <span class="text-stone-500">Beginner</span></li>
-                            <li class="flex justify-between border-b border-stone-100 pb-1"><span>Japanese</span> <span class="text-stone-500">Beginner (Learning)</span></li>
-                        </ul>
-                    </div>
-                </div>
+    <!-- MARQUEE DIVIDER -->
+    <div class="border-b border-black bg-black text-white py-2 overflow-hidden">
+        <div class="marquee-container text-lg md:text-xl font-display uppercase tracking-wide">
+            <div class="marquee-content">
+                Performance Marketing — Motion Design — Salesforce CRM — Lead Generation — 18M+ Views — Branding — Strategy — Analytics — Performance Marketing — Motion Design — Salesforce CRM — Lead Generation — 18M+ Views — Branding — Strategy — Analytics —
             </div>
-
-        </main>
+        </div>
     </div>
 
-<script>
-        // --- DATA STORE ---
-        const experiences = [
-            {
-                role: "Multichannel Coordinator",
-                company: "Agilidade",
-                period: "Sep 2025 - Present",
-                type: "Performance Dept.",
-                description: "Bridging the gap between CRM data and creative output to optimize lead conversion.",
-                tasks: [
-                    "Orchestrating the qualification and transition of leads (Cold/Hot) into Salesforce CRM.",
-                    "Executing targeted paid campaigns (Meta Ads/Google Ads) for health brands: Agilcare, Sorriso+, and Oral Health initiatives.",
-                    "Creating motion graphics and storytelling video content tailored to specific audience segments.",
-                    "Coordinating social media strategy to align organic reach with paid performance goals."
-                ]
-            },
-            {
-                role: "Motion & Digital Content Designer",
-                company: "Trey24k",
-                period: "July 2022 - Sep 2025",
-                type: "Full-time",
-                description: "Spearheaded brand growth through data-backed content creation strategies.",
-                tasks: [
-                    "Responsible for creating the branding image achieving over 18 million views and 200 million impressions.",
-                    "Analyzed content performance metrics to adjust creative strategies in real-time.",
-                    "Collaborated with brand sponsors to align visual identity with messaging.",
-                    "Provided insight-driven recommendations based on audience engagement data."
-                ]
-            },
-            {
-                role: "Motion/Graphic Designer",
-                company: "Universidad Europea",
-                period: "May 2021 - July 2022",
-                type: "Internship",
-                description: "Created multi-channel visual materials for institutional and internal communications.",
-                tasks: [
-                    "Adapted visual materials for social media and internal campaigns.",
-                    "Supported strategic content planning in collaboration with marketing teams.",
-                    "Participated in creative reviews to enhance user interaction."
-                ]
-            },
-            {
-                role: "Motion/Graphic Designer",
-                company: "Clara Amarela",
-                period: "June 2020 - Aug 2020",
-                type: "Contract",
-                description: "Delivered brand-compliant visual content for major clients like BP and RE/MAX.",
-                tasks: [
-                    "Managed tight deadlines while ensuring brand consistency.",
-                    "Produced visual assets for high-profile corporate clients."
-                ]
-            }
-        ];
+    <!-- EXPERIENCE SECTION -->
+    <section id="experience" class="border-b border-black">
+        <div class="grid grid-cols-1 md:grid-cols-12 min-h-[60vh]">
+            
+            <!-- Left Label -->
+            <div class="md:col-span-2 p-4 md:p-8 border-b md:border-b-0 md:border-r border-black font-bold text-xs uppercase sticky top-16 h-fit bg-[#F3F3F3]">
+                [ 02 — Work History ]
+            </div>
 
-        // --- RENDER LOGIC ---
-
-        function renderExperience() {
-            const container = document.getElementById('experience-list');
-            if (!container) return; // Segurança
-
-            // Correção: Construir o HTML todo numa variável primeiro
-            let fullHtml = '<div class="timeline-line"></div>'; 
-
-            experiences.forEach((job, index) => {
-                const isFirst = index === 0;
+            <!-- List -->
+            <div class="md:col-span-10">
                 
-                // NOTA: Usar crases (backticks `) para permitir ${variável}
-                fullHtml += `
-                <div class="relative z-10 pl-12 group cursor-pointer" onclick="toggleJob(${index})">
-                    <div class="absolute left-[20px] top-1.5 w-2.5 h-2.5 rounded-full border-2 ${isFirst ? 'bg-orange-600 border-orange-600' : 'bg-white border-stone-400 group-hover:border-orange-500'} transition-colors"></div>
-                    
-                    <div class="bg-white p-5 rounded-lg border border-stone-200 shadow-sm hover:shadow-md transition-all ${isFirst ? 'border-l-4 border-l-orange-800' : ''}">
-                        <div class="flex justify-between items-start flex-col sm:flex-row mb-2">
-                            <div>
-                                <h4 class="font-bold text-lg text-stone-900">${job.role}</h4>
-                                <div class="text-orange-900 font-medium">${job.company}</div>
-                            </div>
-                            <div class="text-xs font-semibold uppercase tracking-wider text-stone-500 bg-stone-100 px-2 py-1 rounded mt-2 sm:mt-0">${job.period}</div>
-                        </div>
-                        
-                        <p class="text-sm text-stone-600 italic mb-3">${job.description}</p>
-                        
-                        <div id="job-details-${index}" class="hidden overflow-hidden transition-all duration-300 ease-in-out border-t border-stone-100 pt-3 mt-2">
-                            <ul class="space-y-2">
-                                ${job.tasks.map(task => `<li class="text-sm text-stone-700 flex items-start gap-2"><span class="text-orange-400 mt-1">▸</span> ${task}</li>`).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div class="text-center mt-2">
-                            <span id="job-chevron-${index}" class="text-xs text-stone-400 hover:text-orange-600 transition-colors">▼ View Details</span>
+                <!-- Job Item 1 -->
+                <div class="group border-b border-black hover:bg-black hover:text-white transition-colors cursor-pointer" onclick="toggleDetails('job1')">
+                    <div class="p-6 md:p-8 flex flex-col md:flex-row justify-between items-baseline gap-4">
+                        <span class="font-display text-4xl md:text-6xl">MULTICHANNEL COORD.</span>
+                        <div class="text-right">
+                            <div class="text-sm font-bold">AGILIDADE</div>
+                            <div class="text-xs opacity-70">SEP 2025 — PRESENT</div>
                         </div>
                     </div>
-                </div>`;
-            });
-            
-            // Inserir no DOM apenas uma vez (Melhor performance e evita erros de referência)
-            container.innerHTML = fullHtml;
-            
-            // Auto expandir o primeiro
-            setTimeout(() => toggleJob(0), 50); // Pequeno delay para garantir que o DOM está pronto
-        }
+                    <div id="job1" class="max-h-0 overflow-hidden transition-all duration-500 px-6 md:px-8 pb-0 group-hover:pb-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-white/30">
+                            <div class="text-sm font-mono leading-relaxed max-w-md">
+                                Orchestrating the intersection of CRM data and creative production. Managing Salesforce lead pipelines while producing high-conversion motion assets for Meta/Google Ads.
+                            </div>
+                            <ul class="text-xs font-bold uppercase space-y-2 list-none">
+                                <li>[+] Lead Management (Cold/Hot)</li>
+                                <li>[+] Paid Media Strategy (Agilcare, Sorriso+)</li>
+                                <li>[+] Motion Graphics for Ads</li>
+                                <li>[+] Cross-Channel Sync</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
-        function toggleJob(index) {
-            const details = document.getElementById(`job-details-${index}`);
-            const chevron = document.getElementById(`job-chevron-${index}`);
-            
-            if (!details || !chevron) return; // Evita erros se o elemento não for encontrado
+                <!-- Job Item 2 -->
+                <div class="group border-b border-black hover:bg-black hover:text-white transition-colors cursor-pointer" onclick="toggleDetails('job2')">
+                    <div class="p-6 md:p-8 flex flex-col md:flex-row justify-between items-baseline gap-4">
+                        <span class="font-display text-4xl md:text-6xl">MOTION DESIGNER</span>
+                        <div class="text-right">
+                            <div class="text-sm font-bold">TREY24K</div>
+                            <div class="text-xs opacity-70">JUL 2022 — SEP 2025</div>
+                        </div>
+                    </div>
+                    <div id="job2" class="max-h-0 overflow-hidden transition-all duration-500 px-6 md:px-8 pb-0 group-hover:pb-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-white/30">
+                            <div class="text-sm font-mono leading-relaxed max-w-md">
+                                Spearheaded visual identity and content strategy, achieving massive organic growth through data-backed video iteration.
+                            </div>
+                            <!-- CORRECTED STATS -->
+                            <div class="flex flex-row gap-8 justify-start md:justify-end items-end">
+                                <div>
+                                    <div class="font-display text-5xl md:text-6xl">18M+</div>
+                                    <div class="text-xs uppercase">Total Views</div>
+                                </div>
+                                <div>
+                                    <div class="font-display text-5xl md:text-6xl">200M+</div>
+                                    <div class="text-xs uppercase">Impressions</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            if (details.classList.contains('hidden')) {
-                details.classList.remove('hidden');
-                chevron.innerText = "▲ Close Details";
-                chevron.classList.add('text-orange-600');
+                <!-- Job Item 3 -->
+                <div class="group border-b border-black hover:bg-black hover:text-white transition-colors cursor-pointer" onclick="toggleDetails('job3')">
+                    <div class="p-6 md:p-8 flex flex-col md:flex-row justify-between items-baseline gap-4">
+                        <span class="font-display text-4xl md:text-6xl">VISUAL DESIGNER</span>
+                        <div class="text-right">
+                            <div class="text-sm font-bold">UNI. EUROPEA</div>
+                            <div class="text-xs opacity-70">MAY 2021 — JUL 2022</div>
+                        </div>
+                    </div>
+                    <div id="job3" class="max-h-0 overflow-hidden transition-all duration-500 px-6 md:px-8 pb-0 group-hover:pb-8">
+                        <div class="pt-8 border-t border-white/30">
+                            <p class="text-sm font-mono">Created visual materials for multi-channel campaigns, institutional, and internal comms.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- DATA & SKILLS -->
+    <section id="analytics" class="border-b border-black">
+        <div class="grid grid-cols-1 md:grid-cols-2">
+            
+            <!-- Left: Charts -->
+            <div class="border-r border-black p-8 md:p-12">
+                <div class="mb-8 flex justify-between items-end">
+                    <h3 class="font-display text-4xl">IMPACT DATA</h3>
+                    <span class="text-xs font-bold">[ SOURCE: TREY24K ]</span>
+                </div>
+                
+                <!-- Chart Container -->
+                <div class="relative w-full h-64 border-2 border-black p-4 bg-white">
+                    <canvas id="reachChart"></canvas>
+                </div>
+                
+                <div class="mt-8 grid grid-cols-2 gap-4">
+                    <div class="border border-black p-4">
+                        <div class="text-xs font-bold uppercase mb-2">Impressions</div>
+                        <div class="font-display text-5xl">200M</div>
+                    </div>
+                    <div class="border border-black p-4">
+                        <div class="text-xs font-bold uppercase mb-2">Years Exp.</div>
+                        <div class="font-display text-5xl">05+</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Skills List -->
+            <div class="p-8 md:p-12 bg-black text-white">
+                <h3 class="font-display text-4xl mb-8 text-white">TOOLKIT_V3</h3>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold border-b border-white pb-2 mb-4 uppercase">/ Performance & CRM</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">SALESFORCE</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">GOOGLE ADS</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">META SUITE</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">EXCEL (ADV)</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold border-b border-white pb-2 mb-4 uppercase">/ Creative & Motion</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">AFTER EFFECTS</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">PREMIERE PRO</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">FIGMA</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">PHOTOSHOP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-4 border border-white/30 text-xs font-mono">
+                    <span class="blink">_</span> SYSTEM STATUS: OPEN FOR WORK
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="p-8 md:p-12 flex flex-col md:flex-row justify-between items-end gap-8">
+        <div>
+            <h2 class="font-display text-6xl md:text-8xl leading-none">LET'S<br>WORK.</h2>
+        </div>
+        <div class="text-right space-y-2 text-xs font-bold uppercase">
+            <a href="mailto:sanchescosta.samuel@gmail.com" class="block hover:underline">sanchescosta.samuel@gmail.com</a>
+            <a href="#" class="block hover:underline">LinkedIn Profile ↗</a>
+            <a href="#" class="block hover:underline">Behance Portfolio ↗</a>
+            <div class="opacity-50 mt-4">© 2025 Samuel Costa</div>
+        </div>
+    </footer>
+
+    <!-- AI TERMINAL BUTTON -->
+    <button onclick="toggleTerminal()" class="fixed bottom-8 right-8 z-50 bg-black text-white px-6 py-3 font-mono text-xs font-bold border-2 border-white hover:bg-white hover:text-black hover:border-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        [ ASK AI_AGENT ]
+    </button>
+
+    <!-- AI TERMINAL MODAL -->
+    <div id="ai-terminal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a1a] w-full max-w-2xl border-2 border-[#333] shadow-2xl flex flex-col h-[600px] font-mono text-sm text-[#00ff00]">
+            
+            <!-- Terminal Header -->
+            <div class="bg-[#333] p-2 flex justify-between items-center text-xs text-white uppercase">
+                <span>TERMINAL — SAMUEL_AI_V1.0</span>
+                <button onclick="toggleTerminal()" class="hover:bg-red-600 px-2">X</button>
+            </div>
+
+            <!-- Terminal Output -->
+            <div id="terminal-output" class="flex-1 p-4 overflow-y-auto space-y-4 font-bold">
+                <div class="opacity-50">Initializing system... <br>Accessing Samuel Costa's CV data... <br>Ready.</div>
+                <div class="flex gap-2">
+                    <span class="text-white">sys_admin:</span>
+                    <span>Hello. I am the portfolio assistant. Ask me about Samuel's experience with Salesforce or his creative process.</span>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-4 border-t border-[#333] bg-black flex gap-2 items-center">
+                <span class="animate-pulse">></span>
+                <input type="text" id="terminal-input" class="bg-transparent border-none outline-none text-[#00ff00] w-full font-mono placeholder-[#00ff00]/30 uppercase" placeholder="TYPE COMMAND OR QUESTION..." autocomplete="off">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA STORE ---
+        const apiKey = ""; // System injected
+        const roleData = {
+            agilidade: "Multichannel Coordinator at Agilidade (2025-Present). Manages Salesforce lead pipelines and Paid Media (Meta/Google).",
+            trey: "Motion Designer at Trey24k (2022-2025). Achieved 18M+ views via data-driven content strategy.",
+            ue: "Visual Designer at Universidad Europea. Institutional campaigns.",
+            skills: "Salesforce, Google Ads, After Effects, Figma, Excel."
+        };
+
+        // --- UI FUNCTIONS ---
+        function toggleDetails(id) {
+            const el = document.getElementById(id);
+            if (el.style.maxHeight) {
+                el.style.maxHeight = null;
             } else {
-                details.classList.add('hidden');
-                chevron.innerText = "▼ View Details";
-                chevron.classList.remove('text-orange-600');
+                el.style.maxHeight = el.scrollHeight + "px";
             }
         }
 
-        function switchTab(tabName) {
-            // Update Buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('border-orange-900', 'text-orange-900');
-                btn.classList.add('border-transparent', 'text-stone-400');
-            });
-            
-            const activeBtn = document.getElementById(`tab-${tabName}`);
-            if (activeBtn) {
-                activeBtn.classList.remove('border-transparent', 'text-stone-400');
-                activeBtn.classList.add('border-orange-900', 'text-orange-900');
-            }
-
-            // Update Views
-            ['experience', 'impact', 'skills'].forEach(view => {
-                const el = document.getElementById(`view-${view}`);
-                if (el) el.classList.add('hidden');
-            });
-            
-            const activeView = document.getElementById(`view-${tabName}`);
-            if (activeView) activeView.classList.remove('hidden');
-
-            // Trigger chart render if switching to impact tab
-            if (tabName === 'impact') {
-                // Pequeno delay para garantir que o container está visível antes de desenhar
-                setTimeout(renderCharts, 100); 
+        function toggleTerminal() {
+            const el = document.getElementById('ai-terminal');
+            el.classList.toggle('hidden');
+            if(!el.classList.contains('hidden')) {
+                document.getElementById('terminal-input').focus();
             }
         }
 
-        // --- CHARTS CONFIG ---
-        let chartsRendered = false;
-
-        function renderCharts() {
-            if (chartsRendered) return;
-            
-            // Segurança: Verificar se Chart.js carregou
-            if (typeof Chart === 'undefined') {
-                console.error("Chart.js não foi carregado corretamente.");
-                return;
-            }
-
-            const reachCanvas = document.getElementById('reachChart');
-            const skillCanvas = document.getElementById('skillChart');
-
-            if (reachCanvas) {
-                const ctxReach = reachCanvas.getContext('2d');
-                new Chart(ctxReach, {
+        // --- CHART JS ---
+        window.addEventListener('load', () => {
+            if(typeof Chart !== 'undefined') {
+                const ctx = document.getElementById('reachChart').getContext('2d');
+                
+                // Monochrome Configuration
+                Chart.defaults.color = '#000000';
+                Chart.defaults.font.family = "'Space Mono', monospace";
+                
+                new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['Views (M)', 'Impressions (M)'],
+                        labels: ['VIEWS (M)', 'IMP. (M)'],
                         datasets: [{
-                            label: 'Metrics',
+                            label: 'TREY24K METRICS',
                             data: [18, 200],
-                            backgroundColor: ['#c2410c', '#44403c'],
-                            borderRadius: 4
+                            backgroundColor: '#000000',
+                            barThickness: 40
                         }]
                     },
                     options: {
+                        indexAxis: 'y',
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: { legend: { display: false } },
                         scales: {
-                            y: { beginAtZero: true, title: { display: true, text: 'Millions' } }
+                            x: { grid: { display: false }, border: {color: '#000'} },
+                            y: { grid: { display: false }, border: {color: '#000'} }
                         }
                     }
                 });
             }
+        });
 
-            if (skillCanvas) {
-                const ctxSkill = skillCanvas.getContext('2d');
-                new Chart(ctxSkill, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Creative / Motion', 'Analytical / Strategy', 'Tech / Tools'],
-                        datasets: [{
-                            data: [40, 30, 30],
-                            backgroundColor: ['#fdba74', '#7c2d12', '#a8a29e'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '70%',
-                        plugins: {
-                            legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10 } } }
-                        }
-                    }
-                });
+        // --- AI LOGIC (TERMINAL STYLE) ---
+        const input = document.getElementById('terminal-input');
+        const output = document.getElementById('terminal-output');
+
+        input.addEventListener('keypress', async function (e) {
+            if (e.key === 'Enter') {
+                const text = input.value;
+                if(!text) return;
+
+                // Add User Line
+                output.innerHTML += `
+                    <div class="flex gap-2 mt-2">
+                        <span class="text-white">guest@portfolio:~$</span>
+                        <span>${text}</span>
+                    </div>
+                `;
+                input.value = '';
+                output.scrollTop = output.scrollHeight;
+
+                // Loading Sim
+                const loadId = 'load-' + Date.now();
+                output.innerHTML += `<div id="${loadId}" class="opacity-50 mt-1">Processing...</div>`;
+
+                // Call Gemini
+                const response = await callGemini(text);
+                
+                document.getElementById(loadId).remove();
+                
+                output.innerHTML += `
+                    <div class="flex gap-2 mt-1 mb-4 text-white bg-[#00ff00]/10 p-2 border-l-2 border-[#00ff00]">
+                        <span>> ${response}</span>
+                    </div>
+                `;
+                output.scrollTop = output.scrollHeight;
             }
+        });
 
-            chartsRendered = true;
+        async function callGemini(prompt) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const context = `You are a CLI terminal assistant for Samuel Costa. Answer concisely in a technical, robotic tone. Data: ${JSON.stringify(roleData)}`;
+            
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        systemInstruction: { parts: [{ text: context }] }
+                    })
+                });
+                const data = await res.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (e) {
+                return "ERROR: CONNECTION_FAILED. RETRY.";
+            }
         }
-
-        // --- INITIALIZATION ---
-        window.onload = function() {
-            renderExperience();
-        };
     </script>
 </body>
-
 </html>
