@@ -3,147 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMUEL COSTA | ARCHIVE</title>
+    <title>SAMUEL COSTA | PORTFOLIO</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    
+    <!-- Fonts: Anton (Extra Bold) & Space Mono (Technical) -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
     <style>
-        :root { --bg-color: #F3F3F3; --text-main: #0A0A0A; --border-color: #0A0A0A; }
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Space Mono', monospace; overflow-x: hidden; }
-        .font-display { font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 0.85; letter-spacing: 0.02em; }
-        .border-black { border-color: var(--border-color); }
-        @keyframes gridPan { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
-        .grid-bg { background-size: 40px 40px; background-image: linear-gradient(to right, #d4d4d4 1px, transparent 1px), linear-gradient(to bottom, #d4d4d4 1px, transparent 1px); animation: gridPan 4s linear infinite; }
-        .project-card:hover .project-image { filter: grayscale(0%); transform: scale(1.02); }
-        .project-image { filter: grayscale(100%); transition: all 0.5s ease; }
+        :root {
+            --bg-color: #F3F3F3;
+            --text-main: #0A0A0A;
+            --border-color: #0A0A0A;
+        }
+
+        /* --- SMOOTH SCROLL --- */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px; 
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+            line-height: 0.85;
+            letter-spacing: 0.02em;
+        }
+
+        .border-black {
+            border-color: var(--border-color);
+        }
+
+        /* Marquee Animation */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); border-left: 1px solid var(--border-color); }
+        ::-webkit-scrollbar-thumb { background: var(--text-main); }
+        ::-webkit-scrollbar-thumb:hover { background: #333; }
+
+        /* Chart Styling */
+        canvas {
+            filter: grayscale(100%) contrast(120%);
+        }
+        
+        /* Grid Animation */
+        @keyframes gridPan {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; } 
+        }
+
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, #d4d4d4 1px, transparent 1px),
+                              linear-gradient(to bottom, #d4d4d4 1px, transparent 1px);
+            animation: gridPan 4s linear infinite; 
+        }
     </style>
 </head>
 <body class="selection:bg-black selection:text-white">
 
+    <!-- TOP NAVIGATION -->
     <nav class="fixed top-0 w-full z-50 bg-[#F3F3F3]/90 backdrop-blur-sm border-b border-black flex justify-between items-center px-4 py-3 md:px-8 text-xs md:text-sm font-bold uppercase tracking-widest">
-        <a href="index.html" class="hover:line-through cursor-pointer opacity-50">← Back to Index</a>
-        <div class="hidden md:flex gap-12"><span class="opacity-30">[ PORTFOLIO ARCHIVE ]</span></div>
-        <a href="mailto:sanchescosta.samuel@gmail.com" class="hover:bg-black hover:text-white px-2 py-1 transition-colors flex items-center gap-2">CONTACT ME <span>↗</span></a>
+        <div class="hover:line-through cursor-pointer opacity-50">S. Costa // 2025</div>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex gap-12">
+            <a href="#about" class="hover:bg-black hover:text-white px-2 py-1 transition-colors">[ ABOUT ]</a>
+            <a href="portfolio.html" class="bg-black text-white px-2 py-1 hover:bg-red-600 transition-colors">[ PORTFOLIO ]</a>
+            <a href="#experience" class="hover:bg-black hover:text-white px-2 py-1 transition-colors">[ EXPERIENCE ]</a>
+            <a href="#analytics" class="hover:bg-black hover:text-white px-2 py-1 transition-colors">[ DATA ]</a>
+        </div>
+
+        <div class="flex gap-2 md:gap-4">
+            <a href="https://www.linkedin.com/in/samuel-costa/" target="_blank" class="hover:bg-black hover:text-white px-2 py-1 transition-colors flex items-center gap-2 border border-transparent hover:border-black">
+                <span class="hidden md:inline">LINKEDIN</span> <span class="md:hidden">IN</span> <span>↗</span>
+            </a>
+            <a href="mailto:sanchescosta.samuel@gmail.com" class="hover:bg-black hover:text-white px-2 py-1 transition-colors flex items-center gap-2 border border-transparent hover:border-black">
+                CONTACT <span class="hidden md:inline">ME</span> <span>↗</span>
+            </a>
+        </div>
     </nav>
 
-    <header class="pt-32 pb-16 px-4 md:px-8 border-b border-black relative grid-bg">
-        <h1 class="font-display text-[12vw] leading-none">SELECTED<br>WORKS</h1>
-        <div class="flex justify-between items-end mt-8 border-t-2 border-black pt-4">
-            <div class="text-xs font-bold uppercase max-w-xs">/ DIGITAL STRATEGY<br>/ CONTENT GROWTH</div>
-            <div class="font-mono text-xs md:text-sm text-right">[ DATABASE: 03 KEY PROJECTS ]</div>
+    <!-- HERO SECTION -->
+    <header id="about" class="pt-24 pb-12 px-4 md:px-8 border-b border-black relative grid-bg flex flex-col justify-center min-h-[50vh] md:min-h-[70vh]">
+        
+        <!-- Tech Header -->
+        <div class="flex justify-between text-[10px] md:text-xs font-bold uppercase mb-8 md:mb-12 opacity-60">
+            <span>Lat: 38.7223° N</span>
+            <span>Based in Portugal</span>
+            <span>Ver: 2.5.0</span>
+        </div>
+
+        <!-- TITLE LOCKUP -->
+        <div class="flex flex-col items-start z-10 w-full">
+            <h1 class="font-display text-[15vw] md:text-[11vw] leading-[0.85] tracking-tight w-full">
+                SAMUEL
+                <span class="block h-2 md:h-8"></span> 
+                
+                <div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-8 w-full">
+                    <span>COSTA</span>
+                    
+                    <!-- Role Group - Responsive Layout -->
+                    <div class="font-mono text-xs md:text-lg tracking-widest opacity-80 leading-tight mt-2 md:mt-0 border-l-2 border-black pl-4 md:border-l-0 md:pl-0 w-full md:w-auto">
+                        <div class="border-l-2 md:border-l-2 border-black pl-4 md:pl-6 py-1">
+                            / CREATIVE<br>STRATEGIST
+                        </div>
+                    </div>
+                </div>
+            </h1>
+        </div>
+
+        <!-- Bottom Hero Text & BUTTON -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mt-12 md:mt-24 z-10">
+            <div class="text-xs font-bold uppercase max-w-xs opacity-70 order-2 md:order-1">
+                 / Motion Design<br>
+                 / Performance Data<br>
+                 / CRM & Strategy
+            </div>
+
+            <div class="text-left md:text-right max-w-md flex flex-col items-start md:items-end gap-6 order-1 md:order-2 w-full md:w-auto">
+                <div class="bg-[#F3F3F3] p-3 border border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] w-full md:w-auto">
+                    <p class="text-xs md:text-sm leading-relaxed uppercase font-bold">
+                        Bridging the gap between visual storytelling and performance data. 
+                        Optimizing lead flows at Agilidade.
+                    </p>
+                </div>
+
+                <!-- BUTTON -->
+                <a href="portfolio.html" class="inline-block bg-black text-white px-8 py-4 font-mono text-sm font-bold border-2 border-black hover:bg-[#F3F3F3] hover:text-black transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] w-full md:w-auto text-center">
+                    [ OPEN PORTFOLIO ]
+                </a>
+            </div>
         </div>
     </header>
 
-    <section>
-        
-        <!-- PROJECT 01: TREY24K -->
-        <div class="project-card group border-b border-black grid grid-cols-1 md:grid-cols-2 min-h-[50vh]">
-            <!-- Visual Side -->
-            <div class="border-r border-black overflow-hidden relative bg-black/5 min-h-[300px]">
-                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2670&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="Trey24k Analytics">
-                <div class="absolute top-4 left-4 bg-black text-white px-2 py-1 text-xs font-bold font-mono">CASE 01.</div>
-            </div>
-            
-            <!-- Info Side -->
-            <div class="p-8 md:p-12 flex flex-col justify-between bg-[#F3F3F3]">
-                <div>
-                    <h2 class="font-display text-5xl md:text-7xl mb-4 group-hover:translate-x-2 transition-transform">TREY24K<br>GROWTH</h2>
-                    <div class="flex gap-2 mb-8">
-                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">YouTube & TikTok</span>
-                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">Revenue Ops</span>
-                    </div>
-                    
-                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4">
-                        <p>Managed social platforms and content strategy, directly contributing to massive channel scaling and monetisation.</p>
-                        
-                        <ul class="border-l-2 border-black pl-4 space-y-2 mt-4">
-                            <li><span class="font-bold">> 40 MILLION+</span> Total Views Generated</li>
-                            <li><span class="font-bold">> 3.6 MILLION</span> Watch Hours</li>
-                            <li><span class="font-bold">> $100,000+</span> Revenue Contributed</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mt-8 flex gap-4">
-                    <!-- LINK ATUALIZADO: Substitui # pelo link do canal Trey24k se quiseres -->
-                    <a href="https://www.youtube.com/@Trey24k" target="_blank" class="inline-block bg-black text-white px-6 py-3 font-mono text-xs font-bold hover:bg-transparent hover:text-black border-2 border-black transition-all">[ VIEW YOUTUBE ]</a>
-                    <a href="https://www.tiktok.com/@trey24k" target="_blank" class="inline-block bg-transparent text-black px-6 py-3 font-mono text-xs font-bold hover:bg-black hover:text-white border-2 border-black transition-all">[ VIEW TIKTOK ]</a>
-                </div>
+    <!-- MARQUEE -->
+    <div class="border-b border-black bg-black text-white py-2 overflow-hidden">
+        <div class="marquee-container text-lg md:text-xl font-display uppercase tracking-wide">
+            <div class="marquee-content">
+                Performance Marketing — Motion Design — Salesforce CRM — Lead Generation — 18M+ Views — Branding — Strategy — Analytics — Performance Marketing — Motion Design — Salesforce CRM — Lead Generation — 18M+ Views — Branding — Strategy — Analytics —
             </div>
         </div>
+    </div>
 
-        <!-- PROJECT 02: TIGZ -->
-        <div class="project-card group border-b border-black grid grid-cols-1 md:grid-cols-2 min-h-[50vh]">
-            <!-- Info Side (Swapped) -->
-            <div class="p-8 md:p-12 flex flex-col justify-between bg-[#F3F3F3] border-r border-black order-2 md:order-1">
-                <div>
-                    <h2 class="font-display text-5xl md:text-7xl mb-4 group-hover:translate-x-2 transition-transform">TIGZ<br>MEDIA</h2>
-                    <div class="flex gap-2 mb-8">
-                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">Channel Mgmt</span>
-                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">Performance</span>
-                    </div>
-                    
-                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4">
-                        <p>Collaborated on planning, publishing, and deep performance analysis to strengthen fanbase connection.</p>
-                        
-                        <ul class="border-l-2 border-black pl-4 space-y-2 mt-4">
-                            <li><span class="font-bold">> 10 MILLION</span> Total Views Surpassed</li>
-                            <li><span class="font-bold">> STRATEGY</span> Planning & Publishing</li>
-                            <li><span class="font-bold">> ENGAGEMENT</span> Fanbase Growth</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mt-8">
-                    <!-- LINK ATUALIZADO -->
-                    <a href="https://www.youtube.com/@Tigz" target="_blank" class="inline-block bg-black text-white px-6 py-3 font-mono text-xs font-bold hover:bg-transparent hover:text-black border-2 border-black transition-all">[ VIEW CHANNEL ]</a>
-                </div>
-            </div>
+    <!-- EXPERIENCE SECTION -->
+    <section id="experience" class="border-b border-black">
+        <div class="grid grid-cols-1 md:grid-cols-12 min-h-[60vh]">
             
-            <!-- Visual Side -->
-            <div class="overflow-hidden relative bg-black/5 order-1 md:order-2 min-h-[300px]">
-                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2574&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="Tigz Project">
-                <div class="absolute top-4 left-4 bg-black text-white px-2 py-1 text-xs font-bold font-mono">CASE 02.</div>
+            <!-- Left Label (Sticky on Desktop, Static on Mobile) -->
+            <div class="md:col-span-2 p-4 md:p-8 border-b md:border-b-0 md:border-r border-black font-bold text-xs uppercase md:sticky md:top-16 h-fit bg-[#F3F3F3]">
+                [ 02 — Work History ]
+            </div>
+
+            <!-- List -->
+            <div class="md:col-span-10">
+                
+                <!-- Job Item 1 -->
+                <div class="group border-b border-black hover:bg-black hover:text-white transition-colors cursor-pointer" onclick="toggleDetails('job1')">
+                    <div class="p-6 py-8 md:px-8 md:py-20 flex flex-col md:flex-row justify-between items-start md:items-baseline gap-2 md:gap-4">
+                        <span class="font-display text-4xl md:text-6xl leading-none">MULTICHANNEL COORD.</span>
+                        <div class="text-left md:text-right w-full md:w-auto mt-2 md:mt-0">
+                            <div class="text-sm font-bold">AGILIDADE</div>
+                            <div class="text-xs opacity-70">SEP 2025 — PRESENT</div>
+                        </div>
+                    </div>
+                    <div id="job1" class="max-h-0 overflow-hidden transition-all duration-500 px-6 md:px-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 pb-12 border-t border-white/30">
+                            <div class="text-sm font-mono leading-relaxed max-w-md space-y-6">
+                                <p>Orchestrating the intersection of CRM data and creative production. Managing Salesforce lead pipelines while producing high-conversion motion assets for Meta/Google Ads.</p>
+                                <a href="portfolio.html" class="inline-block bg-black text-white px-4 py-2 font-mono text-xs font-bold border border-black hover:bg-white hover:text-black transition-all">[ VIEW PORTFOLIO ]</a>
+                            </div>
+                            <ul class="text-xs font-bold uppercase space-y-2 list-none">
+                                <li>[+] Lead Management (Cold/Hot)</li>
+                                <li>[+] Paid Media Strategy (Agilcare, Sorriso+)</li>
+                                <li>[+] Motion Graphics for Ads</li>
+                                <li>[+] Cross-Channel Sync</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Item 2 -->
+                <div class="group border-b border-black hover:bg-black hover:text-white transition-colors cursor-pointer" onclick="toggleDetails('job2')">
+                    <div class="p-6 py-8 md:px-8 md:py-20 flex flex-col md:flex-row justify-between items-start md:items-baseline gap-2 md:gap-4">
+                        <span class="font-display text-4xl md:text-6xl leading-none">MOTION DESIGNER</span>
+                        <div class="text-left md:text-right w-full md:w-auto mt-2 md:mt-0">
+                            <div class="text-sm font-bold">TREY24K</div>
+                            <div class="text-xs opacity-70">JUL 2022 — SEP 2025</div>
+                        </div>
+                    </div>
+                    <div id="job2" class="max-h-0 overflow-hidden transition-all duration-500 px-6 md:px-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 pb-12 border-t border-white/30">
+                            <div class="text-sm font-mono leading-relaxed max-w-md space-y-6">
+                                <p>Spearheaded visual identity and content strategy, achieving massive organic growth through data-backed video iteration.</p>
+                                <a href="portfolio.html" class="inline-block bg-black text-white px-4 py-2 font-mono text-xs font-bold border border-black hover:bg-white hover:text-black transition-all">[ VIEW PORTFOLIO ]</a>
+                            </div>
+                            <div class="flex flex-row gap-8 justify-start md:justify-end items-end">
+                                <div>
+                                    <div class="font-display text-4xl md:text-6xl">18M+</div>
+                                    <div class="text-xs uppercase">Total Views</div>
+                                </div>
+                                <div>
+                                    <div class="font-display text-4xl md:text-6xl">200M+</div>
+                                    <div class="text-xs uppercase">Impressions</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Item 3 -->
+                <div class="group border-b border-black hover:bg-black hover:text-white transition-colors cursor-pointer" onclick="toggleDetails('job3')">
+                    <div class="p-6 py-8 md:px-8 md:py-20 flex flex-col md:flex-row justify-between items-start md:items-baseline gap-2 md:gap-4">
+                        <span class="font-display text-4xl md:text-6xl leading-none">VISUAL DESIGNER</span>
+                        <div class="text-left md:text-right w-full md:w-auto mt-2 md:mt-0">
+                            <div class="text-sm font-bold">UNI. EUROPEA</div>
+                            <div class="text-xs opacity-70">MAY 2021 — JUL 2022</div>
+                        </div>
+                    </div>
+                    <div id="job3" class="max-h-0 overflow-hidden transition-all duration-500 px-6 md:px-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 pb-12 border-t border-white/30">
+                            <div class="text-sm font-mono leading-relaxed max-w-md space-y-6">
+                                <p>Created visual materials for multi-channel campaigns, institutional, and internal comms. Adapted assets for campus and social media.</p>
+                                <a href="portfolio.html" class="inline-block bg-black text-white px-4 py-2 font-mono text-xs font-bold border border-black hover:bg-white hover:text-black transition-all">[ VIEW PORTFOLIO ]</a>
+                            </div>
+                            <ul class="text-xs font-bold uppercase space-y-2 list-none">
+                                <li>[+] Multi-Channel Campaigns</li>
+                                <li>[+] Institutional Branding</li>
+                                <li>[+] Internal Comms</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-
-        <!-- PROJECT 03: UNIVERSIDAD EUROPEA -->
-        <div class="project-card group border-b border-black grid grid-cols-1 md:grid-cols-2 min-h-[50vh]">
-            <!-- Visual Side -->
-            <div class="border-r border-black overflow-hidden relative bg-black/5 min-h-[300px]">
-                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2670&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="University Project">
-                <div class="absolute top-4 left-4 bg-black text-white px-2 py-1 text-xs font-bold font-mono">CASE 03.</div>
-            </div>
-            
-            <!-- Info Side -->
-            <div class="p-8 md:p-12 flex flex-col justify-between bg-[#F3F3F3]">
-                <div>
-                    <h2 class="font-display text-5xl md:text-7xl mb-4 group-hover:translate-x-2 transition-transform">ACADEMIC<br>GROUP</h2>
-                    <div class="flex gap-2 mb-8">
-                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">Universidade Europeia</span>
-                        <span class="border border-black px-2 py-1 text-[10px] font-bold uppercase hover:bg-black hover:text-white transition-colors">IADE / IPAM</span>
-                    </div>
-                    
-                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4">
-                        <p>Motion design and social media content for a major educational group. Created campaigns for 'Mestrado Gestão de Marketing' and student engagement.</p>
-                        
-                        <ul class="border-l-2 border-black pl-4 space-y-2 mt-4">
-                            <li><span class="font-bold">> MULTI-CHANNEL</span> Institutional Campaigns</li>
-                            <li><span class="font-bold">> BRANDING</span> Internal Comms</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mt-8">
-                    <!-- Link placeholder para Behance ou site da UE -->
-                    <a href="https://www.behance.net/" target="_blank" class="inline-block bg-black text-white px-6 py-3 font-mono text-xs font-bold hover:bg-transparent hover:text-black border-2 border-black transition-all">[ VIEW ON BEHANCE ]</a>
-                </div>
-            </div>
-        </div>
-
     </section>
 
-    <footer class="p-8 md:p-12 flex justify-between items-center bg-black text-white">
-        <div class="font-display text-2xl">S. COSTA</div>
-        <div class="text-xs font-mono opacity-50">END OF ARCHIVE</div>
+    <!-- DATA & SKILLS -->
+    <section id="analytics" class="border-b border-black">
+        <div class="grid grid-cols-1 md:grid-cols-2">
+            
+            <!-- Left: Charts -->
+            <div class="border-r md:border-r-0 lg:border-r border-black p-6 md:p-12">
+                <div class="mb-8 flex justify-between items-end">
+                    <h3 class="font-display text-3xl md:text-4xl">IMPACT DATA</h3>
+                    <span class="text-xs font-bold">[ SOURCE: TREY24K ]</span>
+                </div>
+                <div class="relative w-full h-48 md:h-64 border-2 border-black p-4 bg-white">
+                    <canvas id="reachChart"></canvas>
+                </div>
+                <div class="mt-8 grid grid-cols-2 gap-4">
+                    <div class="border border-black p-4">
+                        <div class="text-xs font-bold uppercase mb-2">Impressions</div>
+                        <div class="font-display text-4xl md:text-5xl">200M</div>
+                    </div>
+                    <div class="border border-black p-4">
+                        <div class="text-xs font-bold uppercase mb-2">Years Exp.</div>
+                        <div class="font-display text-4xl md:text-5xl">05+</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Skills List -->
+            <div class="p-6 md:p-12 bg-black text-white">
+                <h3 class="font-display text-3xl md:text-4xl mb-8 text-white">TOOLKIT_V3</h3>
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold border-b border-white pb-2 mb-4 uppercase">/ Performance & CRM</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">SALESFORCE</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">GOOGLE ADS</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">META SUITE</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">EXCEL (ADV)</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold border-b border-white pb-2 mb-4 uppercase">/ Creative & Motion</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">AFTER EFFECTS</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">PREMIERE PRO</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">FIGMA</span>
+                            <span class="px-3 py-2 border border-white text-xs font-bold hover:bg-white hover:text-black cursor-crosshair">PHOTOSHOP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12 p-4 border border-white/30 text-xs font-mono">
+                    <span class="blink">_</span> SYSTEM STATUS: OPEN FOR WORK
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="p-6 md:p-12 pb-28 md:pb-12 md:pr-64 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+        <div>
+            <h2 class="font-display text-5xl md:text-8xl leading-none">LET'S<br>WORK.</h2>
+        </div>
+        <div class="text-left md:text-right space-y-2 text-xs font-bold uppercase w-full md:w-auto">
+            <a href="mailto:sanchescosta.samuel@gmail.com" class="block hover:underline">sanchescosta.samuel@gmail.com</a>
+            <a href="#" class="block hover:underline">LinkedIn Profile ↗</a>
+            <a href="#" class="block hover:underline">Behance Portfolio ↗</a>
+            <div class="opacity-50 mt-4">© 2025 Samuel Costa</div>
+        </div>
     </footer>
 
-</body>
+    <!-- AI TERMINAL BUTTON -->
+    <button onclick="toggleTerminal()" class="fixed bottom-8 right-8 z-50 bg-black text-white px-6 py-3 font-mono text-xs font-bold border-2 border-white hover:bg-white hover:text-black hover:border-black transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        [ ASK AI_AGENT ]
+    </button>
 
+    <!-- AI TERMINAL MODAL -->
+    <div id="ai-terminal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#1a1a1a] w-full max-w-2xl border-2 border-[#333] shadow-2xl flex flex-col h-[600px] font-mono text-sm text-[#00ff00]">
+            <div class="bg-[#333] p-2 flex justify-between items-center text-xs text-white uppercase">
+                <span>TERMINAL — SAMUEL_AI_V1.0</span>
+                <button onclick="toggleTerminal()" class="hover:bg-red-600 px-2">X</button>
+            </div>
+            <div id="terminal-output" class="flex-1 p-4 overflow-y-auto space-y-4 font-bold">
+                <div class="opacity-50">Initializing system... <br>Accessing Samuel Costa's CV data... <br>Ready.</div>
+                <div class="flex gap-2">
+                    <span class="text-white">sys_admin:</span>
+                    <span>Hello. I am the portfolio assistant. Ask me about Samuel's experience with Salesforce or his creative process.</span>
+                </div>
+            </div>
+            <div class="p-4 border-t border-[#333] bg-black flex gap-2 items-center">
+                <span class="animate-pulse">></span>
+                <input type="text" id="terminal-input" class="bg-transparent border-none outline-none text-[#00ff00] w-full font-mono placeholder-[#00ff00]/30 uppercase" placeholder="TYPE COMMAND OR QUESTION..." autocomplete="off">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = "";
+        const roleData = {
+            agilidade: "Multichannel Coordinator at Agilidade (2025-Present). Manages Salesforce lead pipelines and Paid Media (Meta/Google).",
+            trey: "Motion Designer at Trey24k (2022-2025). Achieved 18M+ views via data-driven content strategy.",
+            ue: "Visual Designer at Universidad Europea. Institutional campaigns.",
+            skills: "Salesforce, Google Ads, After Effects, Figma, Excel."
+        };
+
+        function toggleDetails(id) {
+            const el = document.getElementById(id);
+            if (el.style.maxHeight) { el.style.maxHeight = null; } else { el.style.maxHeight = el.scrollHeight + "px"; }
+        }
+
+        function toggleTerminal() {
+            const el = document.getElementById('ai-terminal');
+            el.classList.toggle('hidden');
+            if(!el.classList.contains('hidden')) { document.getElementById('terminal-input').focus(); }
+        }
+
+        window.addEventListener('load', () => {
+            if(typeof Chart !== 'undefined') {
+                const ctx = document.getElementById('reachChart').getContext('2d');
+                Chart.defaults.color = '#000000';
+                Chart.defaults.font.family = "'Space Mono', monospace";
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: ['VIEWS (M)', 'IMP. (M)'], datasets: [{ label: 'TREY24K METRICS', data: [18, 200], backgroundColor: '#000000', barThickness: 40 }] },
+                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, border: {color: '#000'} }, y: { grid: { display: false }, border: {color: '#000'} } } }
+                });
+            }
+        });
+
+        const input = document.getElementById('terminal-input');
+        const output = document.getElementById('terminal-output');
+
+        input.addEventListener('keypress', async function (e) {
+            if (e.key === 'Enter') {
+                const text = input.value;
+                if(!text) return;
+                output.innerHTML += `<div class="flex gap-2 mt-2"><span class="text-white">guest@portfolio:~$</span><span>${text}</span></div>`;
+                input.value = '';
+                output.scrollTop = output.scrollHeight;
+                const loadId = 'load-' + Date.now();
+                output.innerHTML += `<div id="${loadId}" class="opacity-50 mt-1">Processing...</div>`;
+                const response = await callGemini(text);
+                document.getElementById(loadId).remove();
+                output.innerHTML += `<div class="flex gap-2 mt-1 mb-4 text-white bg-[#00ff00]/10 p-2 border-l-2 border-[#00ff00]"><span>> ${response}</span></div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        });
+
+        async function callGemini(prompt) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const context = `You are a CLI terminal assistant for Samuel Costa. Answer concisely in a technical, robotic tone. Data: ${JSON.stringify(roleData)}`;
+            try {
+                const res = await fetch(url, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], systemInstruction: { parts: [{ text: context }] } }) });
+                const data = await res.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (e) { return "ERROR: CONNECTION_FAILED. RETRY."; }
+        }
+    </script>
+</body>
 </html>
