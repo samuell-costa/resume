@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMUEL COSTA | CONTACT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts: Anton (Extra Bold) & Space Mono (Technical) -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #F3F3F3;
+            --text-main: #0A0A0A;
+            --border-color: #0A0A0A;
+            --grid-color: #d4d4d4;
+        }
+
+        .dark-mode {
+            --bg-color: #0A0A0A;
+            --text-main: #F3F3F3;
+            --border-color: #F3F3F3;
+            --grid-color: #333333;
+        }
+
+        /* --- SMOOTH SCROLL --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+            
+            /* GRID BACKGROUND (MATCHING INDEX) */
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                              linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            animation: gridPan 60s linear infinite; 
+        }
+
+        .font-display {
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+            /* Increased line-height for that "spaced out" look */
+            line-height: 1.1; 
+            letter-spacing: 0.02em;
+        }
+
+        .border-theme {
+            border-color: var(--border-color);
+        }
+
+        /* Grid Animation */
+        @keyframes gridPan {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; } 
+        }
+
+        /* Input Styling */
+        input, textarea {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            padding: 1rem;
+            width: 100%;
+            font-family: 'Space Mono', monospace;
+            outline: none;
+            transition: all 0.3s ease;
+            color: var(--text-main);
+        }
+        
+        input:focus, textarea:focus {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        /* Submit Button Hover */
+        .btn-submit:hover {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
+
+    <!-- NAVIGATION (MATCHING INDEX STYLE) -->
+    <nav class="fixed top-0 w-full z-50 backdrop-blur-md border-b border-theme flex justify-between items-center px-4 py-3 md:px-8 text-xs md:text-sm font-bold uppercase tracking-widest transition-colors duration-300">
+        <a href="index.html" class="hover:line-through cursor-pointer opacity-70">← Back to Index</a>
+        
+        <div class="hidden md:flex gap-12">
+            <span class="opacity-30">[ CONTACT TERMINAL ]</span>
+        </div>
+
+        <div class="flex gap-4 items-center">
+            <!-- Dark Mode Toggle -->
+            <button onclick="toggleDarkMode()" class="px-2 py-1 border border-theme flex items-center gap-2 cursor-pointer hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-colors">
+                [ ◐ ]
+            </button>
+            <a href="https://www.linkedin.com/in/samuel-costa/" target="_blank" class="px-2 py-1 border border-transparent hover:border-theme transition-colors">LINKEDIN ↗</a>
+        </div>
+    </nav>
+
+    <!-- HEADER SECTION -->
+    <header class="pt-32 pb-16 px-4 md:px-8 border-b border-theme relative flex flex-col justify-center min-h-[40vh]">
+        <div class="flex justify-between text-[10px] md:text-xs font-bold uppercase mb-8 opacity-60">
+            <span>Status: Available for Work</span>
+            <span>Loc: Portugal</span>
+        </div>
+
+        <!-- INCREASED LINE HEIGHT HERE -->
+        <h1 class="font-display text-[11vw] md:text-[10vw] tracking-tight">
+            LET'S TALK<br>
+            <span class="ml-8 md:ml-16 block">STRATEGY</span>
+        </h1>
+    </header>
+
+    <!-- CONTACT FORM & INFO GRID -->
+    <section class="grid grid-cols-1 md:grid-cols-12 min-h-[60vh] border-b border-theme bg-[var(--bg-color)]/80 backdrop-blur-sm">
+        
+        <!-- Left: Form -->
+        <div class="md:col-span-8 p-6 md:p-12 border-b md:border-b-0 md:border-r border-theme">
+            <!-- REPLACE ACTION URL WITH YOUR FORMSPREE LINK -->
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-8 max-w-3xl">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <label for="name" class="text-xs font-bold uppercase block opacity-70">[ 01. NAME ]</label>
+                        <input type="text" name="name" id="name" required placeholder="Your Name">
+                    </div>
+                    <div class="space-y-2">
+                        <label for="email" class="text-xs font-bold uppercase block opacity-70">[ 02. EMAIL ]</label>
+                        <input type="email" name="email" id="email" required placeholder="email@example.com">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="subject" class="text-xs font-bold uppercase block opacity-70">[ 03. SUBJECT ]</label>
+                    <input type="text" name="subject" id="subject" required placeholder="Project Proposal / Job Opportunity">
+                </div>
+
+                <div class="space-y-2">
+                    <label for="message" class="text-xs font-bold uppercase block opacity-70">[ 04. MESSAGE ]</label>
+                    <textarea name="message" id="message" rows="6" required placeholder="Tell me about your goals..."></textarea>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="btn-submit w-full md:w-auto bg-[var(--text-main)] text-[var(--bg-color)] px-12 py-4 font-mono text-sm font-bold border-2 border-theme transition-all uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
+                        [ SEND TRANSMISSION ]
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right: Contact Info -->
+        <div class="md:col-span-4 p-6 md:p-12 flex flex-col justify-between bg-[var(--text-main)] text-[var(--bg-color)] transition-colors duration-300">
+            
+            <div class="space-y-12">
+                <div>
+                    <h3 class="font-display text-4xl md:text-5xl mb-6 leading-tight">DIRECT<br>LINE</h3>
+                    <p class="text-xs font-mono opacity-70 mb-6 leading-relaxed">
+                        Currently open for freelance projects, collaborations, and full-time opportunities in Motion Design & Performance Marketing.
+                    </p>
+                    <a href="mailto:sanchescosta.samuel@gmail.com" class="text-sm font-bold border-b-2 border-current hover:opacity-70 transition-opacity pb-1">
+                        sanchescosta.samuel@gmail.com
+                    </a>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold uppercase border-b border-current pb-2 mb-4 opacity-50">/ SOCIAL LINKS</h4>
+                    <ul class="space-y-3 text-sm font-mono">
+                        <li><a href="https://www.linkedin.com/in/samuel-costa/" target="_blank" class="hover:pl-2 transition-all">→ LinkedIn</a></li>
+                        <li><a href="https://www.behance.net/" target="_blank" class="hover:pl-2 transition-all">→ Behance</a></li>
+                    </ul>
+                </div>
+
+                <!-- ADDED: ADDITIONAL PORTFOLIO INFO -->
+
+            </div>
+
+            <div class="mt-12 md:mt-0 p-4 border border-current text-xs font-mono">
+                <span class="blink">_</span> SYSTEM STATUS: ONLINE
+            </div>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="p-8 md:p-12 flex justify-between items-center bg-[var(--text-main)] text-[var(--bg-color)] border-t border-theme transition-colors duration-300">
+        <div class="font-display text-2xl">S. COSTA</div>
+        <div class="text-xs font-mono opacity-50">END OF LINE</div>
+    </footer>
+
+    <script>
+        // Dark Mode Logic (Shared with Index)
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            // Optional: Save preference to localStorage
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Check for saved theme on load
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+
+</body>
+</html>
