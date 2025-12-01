@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root { --bg-color: #F3F3F3; --text-main: #0A0A0A; --border-color: #0A0A0A; --grid-color: #d4d4d4; }
-        /* UPDATED DARK MODE */
         .dark-mode { --bg-color: #121212; --text-main: #F3F3F3; --border-color: #F3F3F3; --grid-color: #333333; }
         
         body { 
@@ -30,6 +29,9 @@
         .project-image { filter: grayscale(100%); transition: all 0.5s ease; }
         .nav-item { cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
         .nav-item:hover { background-color: var(--text-main); color: var(--bg-color); }
+        
+        /* Ensure content sits above grid */
+        section, header, footer { position: relative; z-index: 10; }
         
         #mobile-menu { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
         #mobile-menu.open { max-height: 500px; opacity: 1; }
@@ -70,16 +72,39 @@
     <section>
         <div class="project-card group border-b border-theme grid grid-cols-1 md:grid-cols-2 min-h-[50vh] bg-[var(--bg-color)]/50 backdrop-blur-sm">
             <div class="border-r border-theme overflow-hidden relative bg-[var(--bg-color)] min-h-[300px]">
-                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2670&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="Trey24k">
+                <img src="https://raw.githubusercontent.com/samuell-costa/resume/refs/heads/main/IMAGES/T24K.png" class="project-image w-full h-full object-cover" alt="Trey24k">
                 <div class="absolute top-4 left-4 bg-[var(--text-main)] text-[var(--bg-color)] px-2 py-1 text-xs font-bold font-mono">CASE 01.</div>
             </div>
             <div class="p-8 md:p-12 flex flex-col justify-between">
                 <div>
-                    <div class="flex justify-between items-start mb-4"><h2 class="font-display text-5xl md:text-7xl group-hover:translate-x-2 transition-transform">TREY24K<br>TV</h2><div class="text-right hidden md:block"><div class="font-display text-4xl md:text-6xl text-[var(--text-main)]">40M+</div><div class="text-[10px] font-mono uppercase tracking-widest opacity-60">TOTAL VIEWS</div></div></div>
+                    <div class="flex justify-between items-start mb-4"><h2 class="font-display text-5xl md:text-7xl group-hover:translate-x-2 transition-transform">TREY24K</h2><div class="text-right hidden md:block"><div class="font-display text-4xl md:text-6xl text-[var(--text-main)]">40M+</div><div class="text-[10px] font-mono uppercase tracking-widest opacity-60">TOTAL VIEWS</div></div></div>
                     <div class="flex gap-2 mb-8"><span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase">YouTube & TikTok</span><span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase">Revenue Ops</span></div>
-                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4"><p>Managed social platforms and content strategy, directly contributing to massive channel scaling.</p><ul class="border-l-2 border-theme pl-4 space-y-2 mt-4"><li><span class="font-bold">> 40 MILLION+</span> Total Views Generated</li><li><span class="font-bold">> 3.6 MILLION</span> Watch Hours</li><li><span class="font-bold">> $100,000+</span> Revenue Contributed</li></ul></div>
+                    <div class="font-mono text-xs md:text-sm opacity-80 space-y-4"><p>Managed social platforms and content strategy, directly contributing to massive channel scaling.</p>
+                        <ul class="border-l-2 border-theme pl-4 space-y-2 mt-4">
+                            <li><span class="font-bold">> 40 MILLION+</span> Total Views Generated</li>
+                            <li><span class="font-bold">> 3.6 MILLION</span> Watch Hours</li>
+                            <li><span class="font-bold">> $100,000+</span> Revenue Contributed</li>
+                        </ul>
+
+                        <!-- UPDATED BRAND LIST -->
+                        <div class="mt-6 pt-4 border-t border-theme/30">
+                            <div class="text-[10px] font-bold uppercase mb-2 opacity-60">/ Brand Collaborations</div>
+                            <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs font-bold">
+                                <span>• BATTLESTATE GAMES</span>
+                                <span>• FACTOR</span>
+                                <span>• RAID: SHADOW LEGENDS</span>
+                                <span>• EXOBORN</span>
+                                <span>• ARENA BREAKOUT INFINITE</span>
+                                <span>• LOST LIGHT</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mt-8 flex flex-col md:flex-row gap-4"><a href="https://www.youtube.com/@trey24ktv" target="_blank" class="inline-block bg-[var(--text-main)] text-[var(--bg-color)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] transition-all text-center">[ VIEW YOUTUBE ]</a></div>
+                <div class="mt-8 flex flex-col md:flex-row gap-4">
+                    <a href="https://www.youtube.com/@Trey24k" target="_blank" class="inline-block bg-[var(--text-main)] text-[var(--bg-color)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] transition-all text-center">[ VIEW MAIN CHANNEL ]</a>
+                    <!-- SECOND CHANNEL BUTTON ADDED -->
+                    <a href="https://www.youtube.com/@trey24ktv" target="_blank" class="inline-block bg-transparent text-[var(--text-main)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--text-main)] hover:text-[var(--bg-color)] transition-all text-center">[ VIEW 2ND CHANNEL ]</a>
+                </div>
             </div>
         </div>
         
@@ -93,14 +118,14 @@
                 <div class="mt-8"><a href="https://www.youtube.com/@MoreTigz" target="_blank" class="inline-block bg-[var(--text-main)] text-[var(--bg-color)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] transition-all">[ VIEW CHANNEL ]</a></div>
             </div>
             <div class="overflow-hidden relative bg-[var(--bg-color)] order-1 md:order-2 min-h-[300px]">
-                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2574&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="Tigz Project">
+                <img src="https://raw.githubusercontent.com/samuell-costa/resume/refs/heads/main/IMAGES/TIGZ.png" class="project-image w-full h-full object-cover" alt="Tigz Project">
                 <div class="absolute top-4 left-4 bg-[var(--text-main)] text-[var(--bg-color)] px-2 py-1 text-xs font-bold font-mono">CASE 02.</div>
             </div>
         </div>
         
         <div class="project-card group border-b border-theme grid grid-cols-1 md:grid-cols-2 min-h-[50vh] bg-[var(--bg-color)]/50 backdrop-blur-sm">
             <div class="border-r border-theme overflow-hidden relative bg-[var(--bg-color)] min-h-[300px]">
-                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2670&auto=format&fit=crop" class="project-image w-full h-full object-cover" alt="University Project">
+                <img src="https://raw.githubusercontent.com/samuell-costa/resume/refs/heads/main/IMAGES/IPAM.png" class="project-image w-full h-full object-cover" alt="University Project">
                 <div class="absolute top-4 left-4 bg-[var(--text-main)] text-[var(--bg-color)] px-2 py-1 text-xs font-bold font-mono">CASE 03.</div>
             </div>
             <div class="p-8 md:p-12 flex flex-col justify-between">
@@ -109,7 +134,7 @@
                     <div class="flex gap-2 mb-8"><span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase">Universidade Europeia</span><span class="border border-theme px-2 py-1 text-[10px] font-bold uppercase">IADE / IPAM</span></div>
                     <div class="font-mono text-xs md:text-sm opacity-80 space-y-4"><p>Motion design and social media content for a major educational group.</p><ul class="border-l-2 border-theme pl-4 space-y-2 mt-4"><li><span class="font-bold">> MULTI-CHANNEL</span> Institutional Campaigns</li><li><span class="font-bold">> BRANDING</span> Internal Comms</li></ul></div>
                 </div>
-                <div class="mt-8"><a href="https://www.behance.net/" target="_blank" class="inline-block bg-[var(--text-main)] text-[var(--bg-color)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] transition-all">[ VIEW ASSETS ]</a></div>
+                <div class="mt-8"><a href="https://www.instagram.com/tv/CcSl9xDD7Oe/" target="_blank" class="inline-block bg-[var(--text-main)] text-[var(--bg-color)] px-6 py-3 font-mono text-xs font-bold border-2 border-theme hover:bg-[var(--bg-color)] hover:text-[var(--text-main)] transition-all">[ VIEW ASSETS ]</a></div>
             </div>
         </div>
     </section>
