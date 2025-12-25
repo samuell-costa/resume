@@ -17,12 +17,29 @@
             font-family: 'Space Mono', monospace; 
             overflow-x: hidden;
             transition: background-color 0.3s, color 0.3s;
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-                              linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-            animation: gridPan 60s linear infinite;
+            /* Performance: Background removed from body */
         }
         
+        /* PERFORMANCE FIX: Separate Layer for Background */
+        #grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1; /* Behind everything */
+            pointer-events: none; /* Let clicks pass through */
+            
+            background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                              linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            
+            /* Optimizations */
+            animation: gridPan 60s linear infinite; 
+            will-change: transform;
+            backface-visibility: hidden;
+        }
+
         .font-display { font-family: 'Anton', sans-serif; text-transform: uppercase; line-height: 1.1; letter-spacing: 0.02em; }
         .border-theme { border-color: var(--border-color); }
         @keyframes gridPan { 0% { background-position: 0 0; } 100% { background-position: 40px 40px; } }
@@ -41,6 +58,9 @@
     </style>
 </head>
 <body class="selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
+
+    <!-- PERFORMANCE FIX: Fixed Background Element -->
+    <div id="grid-background"></div>
 
     <nav class="fixed top-0 w-full z-50 backdrop-blur-md border-b border-theme transition-colors duration-300 bg-[var(--bg-color)]/80 supports-[backdrop-filter]:bg-[var(--bg-color)]/60">
         <div class="flex justify-between items-center px-4 py-3 md:px-8 text-xs md:text-sm font-bold uppercase tracking-widest relative">

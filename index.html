@@ -42,15 +42,27 @@
             font-family: 'Space Mono', monospace;
             overflow-x: hidden;
             transition: background-color 0.3s, color 0.3s;
+            /* Performance: Background removed from body */
+        }
+
+        /* PERFORMANCE FIX: Separate Layer for Background */
+        #grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1; /* Behind everything */
+            pointer-events: none; /* Let clicks pass through */
             
-            /* GRID BACKGROUND APPLIED GLOBALLY */
             background-image: linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
                               linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
             background-size: 40px 40px;
-            /* FIXED attachment makes it look like a continuous canvas */
-            background-attachment: fixed;
-            /* Animation keeps running */
-            animation: gridPan 4s linear infinite; 
+            
+            /* Optimizations */
+            animation: gridPan 60s linear infinite; 
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         .font-display {
@@ -107,6 +119,9 @@
     </style>
 </head>
 <body class="selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
+
+    <!-- PERFORMANCE FIX: Fixed Background Element -->
+    <div id="grid-background"></div>
 
     <!-- NAVIGATION -->
     <nav class="fixed top-0 w-full z-50 backdrop-blur-md border-b border-theme transition-colors duration-300 bg-[var(--bg-color)]/80 supports-[backdrop-filter]:bg-[var(--bg-color)]/60">
@@ -249,7 +264,7 @@
                                 <ul class="text-xs font-bold uppercase space-y-2 list-none mt-4">
                                     <li>[+] Data-Driven Content Strategy</li>
                                     <li>[+] Algorithmic Growth Optimization</li>
-                                    <li>[+] Sponsorship Integration & Branding</li>
+                                    <li>[+] Partnerships: Raid, Arena Breakout, Battlestate</li>
                                 </ul>
                             </div>
                         </div>
@@ -383,5 +398,4 @@
         if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-mode'); }
     </script>
 </body>
-
 </html>
