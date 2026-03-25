@@ -639,19 +639,19 @@
             </button>
             
             <!-- Esquerda: Imagem/Vídeo -->
-            <div id="modal-media-panel" class="w-full md:w-1/2 bg-[#0a0a0a] relative flex items-center justify-center h-[35vh] md:h-full transition-all duration-500">
+            <div id="modal-media-panel" class="w-full md:w-1/2 bg-[#0a0a0a] relative flex items-center justify-center h-[35vh] md:h-full transition-all duration-500 overflow-hidden shrink-0">
                 
                 <!-- Contentor do Plyr Player para Vídeos -->
-                <div id="video-wrapper" class="w-full h-full hidden flex items-center justify-center">
+                <div id="video-wrapper" class="absolute inset-0 w-full h-full hidden items-center justify-center z-0">
                     <video id="modal-video" playsinline controls class="w-full h-full">
                     </video>
                 </div>
 
-                <img id="modal-image" src="" alt="Projeto" class="w-full h-full object-contain hidden p-2 md:p-4">
+                <img id="modal-image" src="" alt="Projeto" class="absolute inset-0 w-full h-full object-contain hidden p-4 md:p-8 m-auto z-10 bg-[#0a0a0a]">
             </div>
             
             <!-- Direita: Conteúdo -->
-            <div id="modal-text-panel" class="w-full md:w-1/2 h-full p-8 md:p-12 overflow-y-auto overflow-x-hidden opacity-100 flex flex-col justify-start modal-scroll transition-all duration-500">
+            <div id="modal-text-panel" class="w-full md:w-1/2 flex-1 min-h-0 p-6 md:p-12 overflow-y-auto overflow-x-hidden opacity-100 flex flex-col justify-start modal-scroll transition-all duration-500">
                 <h3 id="modal-title" class="text-3xl md:text-5xl font-extrabold mb-8 text-white tracking-tight"></h3>
                 <div id="modal-desc" class="text-white opacity-90 leading-relaxed font-light"></div>
             </div>
@@ -884,7 +884,7 @@
                 isCinemaMode = !isCinemaMode;
 
                 if(isCinemaMode) {
-                    textPanel.classList.remove('md:w-1/2', 'p-8', 'md:p-12', 'opacity-100');
+                    textPanel.classList.remove('md:w-1/2', 'p-6', 'md:p-12', 'opacity-100', 'flex-1', 'min-h-0');
                     textPanel.classList.add('w-0', 'p-0', 'opacity-0');
                     
                     mediaPanel.classList.remove('md:w-1/2');
@@ -896,7 +896,7 @@
                     icon.className = 'fas fa-chevron-left text-xl';
                     btn.title = currentLang === 'en' ? "Show Text" : "Mostrar Texto";
                 } else {
-                    textPanel.classList.add('md:w-1/2', 'p-8', 'md:p-12', 'opacity-100');
+                    textPanel.classList.add('md:w-1/2', 'p-6', 'md:p-12', 'opacity-100', 'flex-1', 'min-h-0');
                     textPanel.classList.remove('w-0', 'p-0', 'opacity-0');
                     
                     mediaPanel.classList.remove('w-full');
@@ -918,9 +918,19 @@
                 modalTitle.textContent = title;
                 modalDesc.innerHTML = currentLang === 'en' ? descEN : descPT;
                 
+                const expandBtn = document.getElementById('expand-media-btn');
+                
                 if (mediaType === 'video') {
                     modalImage.classList.add('hidden');
+                    modalImage.classList.remove('block');
                     modalVideoWrapper.classList.remove('hidden');
+                    modalVideoWrapper.classList.add('flex');
+                    
+                    // Mostra o botão do Modo Cinema apenas para os vídeos
+                    if (expandBtn) {
+                        expandBtn.classList.remove('hidden');
+                        expandBtn.classList.add('md:flex');
+                    }
                     
                     let mimeType = 'video/mp4';
                     if (mediaSrc.toLowerCase().includes('.webm')) {
@@ -937,8 +947,23 @@
                     }
                 } else {
                     modalVideoWrapper.classList.add('hidden');
+                    modalVideoWrapper.classList.remove('flex');
                     modalImage.classList.remove('hidden');
+                    modalImage.classList.add('block');
                     modalImage.src = mediaSrc;
+                    
+                    // Esconde permanentemente o botão do Modo Cinema quando é uma imagem
+                    if (expandBtn) {
+                        expandBtn.classList.add('hidden');
+                        expandBtn.classList.remove('md:flex');
+                    }
+
+                    // Garantir que o vídeo para completamente caso estivesse a dar
+                    if (plyrPlayer) {
+                        plyrPlayer.stop(); 
+                    } else {
+                        nativeVideo.pause();
+                    }
                 }
                 
                 modal.classList.remove('hidden');
@@ -974,7 +999,7 @@
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
                     modalImage.src = ""; 
-                    nativeVideo.src = "";
+                    // Limpar a source do vídeo nativo crashava o Plyr, portanto foi removido.
                 }, 300); 
             }
 
