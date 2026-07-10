@@ -136,6 +136,12 @@
                 <div class="w-full md:w-1/3 flex flex-col justify-start order-2 md:order-1">
                     <h2 id="project-title" class="text-xl md:text-3xl font-bold uppercase tracking-tight text-white mb-4"></h2>
                     <div id="project-desc" class="text-sm font-light text-gray-400 leading-relaxed space-y-4"></div>
+                    
+                    <!-- Thumbnails mosaic gallery -->
+                    <div id="project-gallery-wrapper" class="mt-8 hidden border-t border-white/10 pt-6">
+                        <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3" data-i18n="galleryTitle">Quick Navigation</h4>
+                        <div id="project-gallery" class="grid grid-cols-4 gap-2"></div>
+                    </div>
                 </div>
                 
                 <!-- Right Column: Video/Media Player (ordered first on mobile) -->
@@ -448,6 +454,7 @@
                 navAbout: "About",
                 navContact: "Contact",
                 btnClose: "Close Project",
+                galleryTitle: "Quick Navigation",
                 aboutBio: "Samuel Costa is a Marketing and Creative Strategist with over 5 years of experience specializing in social media, campaigns, and creative content direction. By combining data analysis with visual storytelling, he helps brands scale their digital presence and build engaging experiences.",
                 contactTitle: "Get In Touch",
                 formName: "Name",
@@ -462,6 +469,7 @@
                 navAbout: "Sobre Mim",
                 navContact: "Contacto",
                 btnClose: "Fechar Projeto",
+                galleryTitle: "Navegação Rápida",
                 aboutBio: "Samuel Costa é um Marketing e Creative Strategist com mais de 5 anos de experiência especializado em redes sociais, campanhas e direção de conteúdos criativos. Ao aliar a análise de dados ao storytelling visual, ajuda marcas a escalar a sua presença digital e a criar experiências envolventes.",
                 contactTitle: "Entrar em Contacto",
                 formName: "Nome",
@@ -666,6 +674,34 @@
                 } else {
                     nativeVideo.pause();
                 }
+            }
+            
+            // Build Quick Navigation gallery (mosaic)
+            const category = card.getAttribute('data-category');
+            const sameCategoryCards = Array.from(document.querySelectorAll(`.project-card[data-category="${category}"]`));
+            const galleryWrapper = document.getElementById('project-gallery-wrapper');
+            const galleryContainer = document.getElementById('project-gallery');
+            
+            galleryContainer.innerHTML = '';
+            
+            if (sameCategoryCards.length > 1) {
+                galleryWrapper.classList.remove('hidden');
+                sameCategoryCards.forEach(siblingCard => {
+                    const siblingId = siblingCard.getAttribute('data-id');
+                    const activeId = card.getAttribute('data-id');
+                    const isActive = siblingId === activeId;
+                    const imgUrl = siblingCard.querySelector('img').getAttribute('src');
+                    
+                    const thumb = document.createElement('button');
+                    thumb.className = `aspect-square bg-[#111] border rounded-sm overflow-hidden transition-all duration-200 cursor-pointer ${isActive ? 'border-white opacity-100 scale-95' : 'border-white/10 opacity-45 hover:opacity-100 hover:border-white/40'}`;
+                    thumb.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover" alt="Thumbnail">`;
+                    thumb.addEventListener('click', () => {
+                        openProject(siblingCard);
+                    });
+                    galleryContainer.appendChild(thumb);
+                });
+            } else {
+                galleryWrapper.classList.add('hidden');
             }
             
             // Show details section
