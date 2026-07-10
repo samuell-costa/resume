@@ -56,6 +56,16 @@
         .project-card:hover img {
             transform: scale(1.02);
         }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col justify-between selection:bg-white selection:text-black">
@@ -137,10 +147,10 @@
                     <h2 id="project-title" class="text-xl md:text-3xl font-bold uppercase tracking-tight text-white mb-4"></h2>
                     <div id="project-desc" class="text-sm font-light text-gray-400 leading-relaxed space-y-4"></div>
                     
-                    <!-- Thumbnails mosaic gallery -->
+                    <!-- Thumbnails horizontal gallery -->
                     <div id="project-gallery-wrapper" class="mt-8 hidden border-t border-white/10 pt-6">
                         <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3" data-i18n="galleryTitle">Quick Navigation</h4>
-                        <div id="project-gallery" class="grid grid-cols-4 gap-2"></div>
+                        <div id="project-gallery" class="flex flex-row overflow-x-auto gap-2 pb-2 no-scrollbar"></div>
                     </div>
                 </div>
                 
@@ -693,7 +703,7 @@
                     const imgUrl = siblingCard.querySelector('img').getAttribute('src');
                     
                     const thumb = document.createElement('button');
-                    thumb.className = `aspect-square bg-[#111] border rounded-sm overflow-hidden transition-all duration-200 cursor-pointer ${isActive ? 'border-white opacity-100 scale-95' : 'border-white/10 opacity-45 hover:opacity-100 hover:border-white/40'}`;
+                    thumb.className = `flex-shrink-0 w-20 h-20 bg-[#111] border rounded-sm overflow-hidden transition-all duration-200 cursor-pointer ${isActive ? 'border-white opacity-100 scale-95' : 'border-white/10 opacity-45 hover:opacity-100 hover:border-white/40'}`;
                     thumb.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover" alt="Thumbnail">`;
                     thumb.addEventListener('click', () => {
                         openProject(siblingCard);
@@ -725,6 +735,42 @@
                 const nativeVideo = document.getElementById('modal-video');
                 if (nativeVideo) nativeVideo.pause();
             }
+            
+            // Close lightbox if open
+            closeLightbox();
+        };
+
+        // Lightbox Functions
+        window.openLightbox = function() {
+            const currentImg = document.getElementById('project-image');
+            if (currentImg && !currentImg.classList.contains('hidden') && currentImg.src) {
+                const lightbox = document.getElementById('lightbox-modal');
+                const lightboxImg = document.getElementById('lightbox-image');
+                
+                lightboxImg.src = currentImg.src;
+                lightbox.classList.remove('hidden');
+                lightbox.classList.add('flex');
+                document.body.style.overflow = 'hidden'; // prevent scroll
+                
+                setTimeout(() => {
+                    lightbox.classList.remove('opacity-0');
+                    lightbox.classList.add('opacity-100');
+                }, 10);
+            }
+        };
+
+        window.closeLightbox = function() {
+            const lightbox = document.getElementById('lightbox-modal');
+            if (lightbox && !lightbox.classList.contains('hidden')) {
+                lightbox.classList.remove('opacity-100');
+                lightbox.classList.add('opacity-0');
+                document.body.style.overflow = '';
+                
+                setTimeout(() => {
+                    lightbox.classList.remove('flex');
+                    lightbox.classList.add('hidden');
+                }, 300);
+            }
         };
 
         // Initialize Page
@@ -734,6 +780,23 @@
             
             // Navigate to default view (Campaigns)
             window.navigateTo('campaigns');
+            
+            // Attach click event to project image for lightbox zoom
+            const projImg = document.getElementById('project-image');
+            if (projImg) {
+                projImg.classList.add('cursor-zoom-in');
+                projImg.addEventListener('click', openLightbox);
+            }
+            
+            // Close lightbox on clicking background
+            const lightbox = document.getElementById('lightbox-modal');
+            if (lightbox) {
+                lightbox.addEventListener('click', function(e) {
+                    if (e.target === this || e.target === document.getElementById('lightbox-image')) {
+                        closeLightbox();
+                    }
+                });
+            }
             
             // Attach click event to project cards
             document.querySelectorAll('.project-card').forEach(card => {
@@ -781,5 +844,13 @@
             }
         });
     </script>
+
+    <!-- LIGHTBOX ZOOM MODAL -->
+    <div id="lightbox-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[300] hidden items-center justify-center cursor-zoom-out transition-opacity duration-300 opacity-0">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors text-3xl font-light cursor-pointer" aria-label="Close Zoom">
+            ✕
+        </button>
+        <img id="lightbox-image" src="" alt="Zoomed View" class="max-w-[90%] max-h-[85vh] object-contain rounded-sm select-none">
+    </div>
 </body>
 </html>
