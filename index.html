@@ -150,7 +150,7 @@
                     <!-- Thumbnails horizontal gallery -->
                     <div id="project-gallery-wrapper" class="mt-8 hidden border-t border-white/10 pt-6">
                         <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3" data-i18n="galleryTitle">Quick Navigation</h4>
-                        <div id="project-gallery" class="flex flex-row overflow-x-auto gap-2 pb-2 no-scrollbar"></div>
+                        <div id="project-gallery" class="flex flex-row overflow-x-auto gap-2 pb-2 no-scrollbar md:grid md:grid-cols-4 md:overflow-visible md:pb-0"></div>
                     </div>
                 </div>
                 
@@ -703,7 +703,7 @@
                     const imgUrl = siblingCard.querySelector('img').getAttribute('src');
                     
                     const thumb = document.createElement('button');
-                    thumb.className = `flex-shrink-0 w-20 h-20 bg-[#111] border rounded-sm overflow-hidden transition-all duration-200 cursor-pointer ${isActive ? 'border-white opacity-100 scale-95' : 'border-white/10 opacity-45 hover:opacity-100 hover:border-white/40'}`;
+                    thumb.className = `flex-shrink-0 w-20 h-20 md:w-auto md:h-auto md:aspect-square md:flex-shrink bg-[#111] border rounded-sm overflow-hidden transition-all duration-200 cursor-pointer ${isActive ? 'border-white opacity-100 scale-95' : 'border-white/10 opacity-45 hover:opacity-100 hover:border-white/40'}`;
                     thumb.innerHTML = `<img src="${imgUrl}" class="w-full h-full object-cover" alt="Thumbnail">`;
                     thumb.addEventListener('click', () => {
                         openProject(siblingCard);
